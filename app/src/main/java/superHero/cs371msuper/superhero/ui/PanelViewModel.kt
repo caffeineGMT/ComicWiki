@@ -60,7 +60,7 @@ class PanelViewModel : ViewModel() {
             )
 //        val url =
 //            "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/577-scarlet-spider.jpg"
-        val url =characters.value?.get(0)?.image?.imageURL
+        val url = characters.value?.get(0)?.image?.imageURL
         Log.d(javaClass.simpleName, "Built: $url")
         println(characters.value?.get(1)?.name.toString())
         return url.toString()
@@ -68,5 +68,18 @@ class PanelViewModel : ViewModel() {
 
     fun netFetchImage(imageView: ImageView) {
         Glide.fetch(randomHeroURL(), safePiscumURL(), imageView)
+    }
+
+    fun getCharacterAt(position: Int): Character? {
+        val localList = characters.value?.toList()
+        localList?.let {
+            if (position >= it.size) return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getCharactersCount(): Int {
+        return characters.value?.size ?: 0
     }
 }
