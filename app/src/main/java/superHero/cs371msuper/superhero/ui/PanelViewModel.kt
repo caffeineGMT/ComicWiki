@@ -9,8 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import superHero.cs371msuper.superhero.api.SuperHeroAPI
-import superHero.cs371msuper.superhero.api.CatRepository
+import superHero.cs371msuper.superhero.api.Character
+import superHero.cs371msuper.superhero.api.ComicVineAPI
+import superHero.cs371msuper.superhero.api.ComicVineRepo
 import superHero.cs371msuper.superhero.glide.Glide
 import kotlin.random.Random
 
@@ -19,24 +20,19 @@ class PanelViewModel : ViewModel() {
     var width = 350
     var height = 500
     private val random = Random(System.currentTimeMillis())
-    private val catFactApi = SuperHeroAPI.create()
-    private val catRepository = CatRepository(catFactApi)
-    private val catFact = MutableLiveData<String>()
+    private val comicVineAPI = ComicVineAPI.create()
+    private val comicVineRepo = ComicVineRepo(comicVineAPI)
+    private val characters = MutableLiveData<List<Character>>()
 
-    //SSS
-    fun netFetchCatFact() = viewModelScope.launch(
+    fun netFetchCharacters() = viewModelScope.launch(
         context = viewModelScope.coroutineContext
-                + Dispatchers.IO) {
-        // Update LiveData from IO dispatcher, use postValue
-        catFact.postValue(catRepository.fetchFact())
+                + Dispatchers.IO
+    ) {
+        characters.postValue(comicVineRepo.fetchCharacters())
     }
-    //RRR
-    // // XXX Write this function
-    // fun netFetchCatFact() {}
-    //EEE
 
-    fun observeCatFact(): LiveData<String> {
-        return catFact
+    fun observeCharacterDeck(): LiveData<List<Character>> {
+        return characters
     }
 
     private fun safePiscumURL(): String {
@@ -62,9 +58,12 @@ class PanelViewModel : ViewModel() {
                 "image",
                 random.nextInt(1000).toString()
             )
-        val url = "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/577-scarlet-spider.jpg"
+//        val url =
+//            "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/577-scarlet-spider.jpg"
+        val url =characters.value?.get(0)?.image?.imageURL
         Log.d(javaClass.simpleName, "Built: $url")
-        return url
+        println(characters.value?.get(1)?.name.toString())
+        return url.toString()
     }
 
     fun netFetchImage(imageView: ImageView) {

@@ -2,11 +2,13 @@ package superHero.cs371msuper.superhero.ui
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.panel_fragment.*
 import superHero.cs371msuper.superhero.R
+import superHero.cs371msuper.superhero.glide.Glide
 
 class PanelFragment :
     Fragment(R.layout.panel_fragment) {
@@ -36,12 +38,14 @@ class PanelFragment :
             viewModel.height = height
         }
         //SSS
-        viewModel.observeCatFact().observe(viewLifecycleOwner, Observer {
-            tv.text = it
+        viewModel.observeCharacterDeck().observe(viewLifecycleOwner, Observer {
+            tv.text = it[0].deck
+            Log.d(javaClass.simpleName, it[0].image.imageURL)
+            Glide.fetch(it[0].image.imageURL,it[0].image.imageURL,ib)
         })
         // When clicked, refresh
         tv.setOnLongClickListener{
-            viewModel.netFetchCatFact()
+            viewModel.netFetchCharacters()
             // also works: return@setOnLongClickListener true
             true
         }
@@ -49,7 +53,7 @@ class PanelFragment :
             viewModel.netFetchImage(ib)
         }
         // Fetch our initial contents
-        viewModel.netFetchCatFact()
+        viewModel.netFetchCharacters()
         viewModel.netFetchImage(ib)
         //EEE // XXX Write me
     }
