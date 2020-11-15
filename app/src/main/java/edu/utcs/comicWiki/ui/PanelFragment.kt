@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero.ui
+package edu.utcs.comicWiki.ui
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.panel_fragment.*
-import superHero.cs371msuper.superhero.R
-import superHero.cs371msuper.superhero.glide.Glide
+import edu.utcs.comicWiki.R
+import edu.utcs.comicWiki.glide.Glide
 
 class PanelFragment :
     Fragment(R.layout.panel_fragment) {
@@ -18,7 +18,7 @@ class PanelFragment :
     }
     // Per-fragment viewModel, not shared
     //SSS
-    private val viewModel: PanelViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     //RRR
     // // XXX Initialize me
     // private val viewModel: PanelViewModel

@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero.ui
+package edu.utcs.comicWiki.ui
 
 import android.net.Uri
 import android.util.Log
@@ -9,17 +9,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import superHero.cs371msuper.superhero.api.Character
-import superHero.cs371msuper.superhero.api.ComicVineAPI
-import superHero.cs371msuper.superhero.api.ComicVineRepo
-import superHero.cs371msuper.superhero.glide.Glide
+import edu.utcs.comicWiki.api.Character
+import edu.utcs.comicWiki.api.ComicVineAPI
+import edu.utcs.comicWiki.api.ComicVineRepo
+import edu.utcs.comicWiki.glide.Glide
 import kotlin.random.Random
 
-class PanelViewModel : ViewModel() {
-    //Initial guess for width and height
+class MainViewModel : ViewModel() {
     var width = 350
     var height = 500
     private val random = Random(System.currentTimeMillis())
+
+    // TODO: references
     private val comicVineAPI = ComicVineAPI.create()
     private val comicVineRepo = ComicVineRepo(comicVineAPI)
     private val characters = MutableLiveData<List<Character>>()
@@ -73,7 +74,8 @@ class PanelViewModel : ViewModel() {
     fun getCharacterAt(position: Int): Character? {
         val localList = characters.value?.toList()
         localList?.let {
-            if (position >= it.size) return null
+            if (position >= it.size)
+                return null
             return it[position]
         }
         return null

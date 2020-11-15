@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero.glide
+package edu.utcs.comicWiki.glide
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,7 +7,7 @@ import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
-import superHero.cs371msuper.superhero.R
+import edu.utcs.comicWiki.R
 
 @GlideModule
 class AppGlideModule : AppGlideModule() {

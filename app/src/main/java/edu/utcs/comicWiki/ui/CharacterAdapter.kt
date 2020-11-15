@@ -1,17 +1,16 @@
-package superHero.cs371msuper.superhero.ui
+package edu.utcs.comicWiki.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import superHero.cs371msuper.superhero.R
-import superHero.cs371msuper.superhero.api.Character
-import superHero.cs371msuper.superhero.glide.Glide
+import edu.utcs.comicWiki.R
+import edu.utcs.comicWiki.api.Character
+import edu.utcs.comicWiki.glide.Glide
 
-class CharacterAdapter(private val viewModel: PanelViewModel) :
+class CharacterAdapter(private val viewModel: MainViewModel) :
     RecyclerView.Adapter<CharacterAdapter.VH>() {
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {

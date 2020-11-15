@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero.api
+package edu.utcs.comicWiki.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

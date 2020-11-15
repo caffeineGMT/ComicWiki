@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero.api
+package edu.utcs.comicWiki.api
 
 import com.google.gson.annotations.SerializedName
 
@@ -16,6 +16,6 @@ data class Character(
 }
 
 data class Image(
-    @SerializedName("thumb_url")
+    @SerializedName("screen_url")
     val imageURL: String
 )

@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero
+package edu.utcs.comicWiki
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

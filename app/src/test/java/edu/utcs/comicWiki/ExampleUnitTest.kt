@@ -1,4 +1,4 @@
-package superHero.cs371msuper.superhero
+package edu.utcs.comicWiki
 
 import org.junit.Test
 
