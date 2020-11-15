@@ -3,6 +3,7 @@ package edu.utcs.comicWiki
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import edu.utcs.comicWiki.ui.CharacterFragment
+import edu.utcs.comicWiki.ui.RelationFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentContainerView, CharacterFragment.newInstance())
+                .replace(R.id.fragmentContainerView, RelationFragment.newInstance())
                 .commit()
         }
     }
