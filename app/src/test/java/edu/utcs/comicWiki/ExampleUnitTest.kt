@@ -1,5 +1,6 @@
 package edu.utcs.comicWiki
 
+import edu.utcs.comicWiki.ui.MainViewModel
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +14,12 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun URL2Path_isCorrect() {
+        val mv = MainViewModel
+        val str = mv.URL2Path("https://comicvine.gamespot.com/api/team/4060-2171/")
+        println(str)
     }
 }

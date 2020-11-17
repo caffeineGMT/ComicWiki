@@ -7,11 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.utcs.comicWiki.api.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import edu.utcs.comicWiki.api.Character
-import edu.utcs.comicWiki.api.ComicVineAPI
-import edu.utcs.comicWiki.api.ComicVineRepo
 import edu.utcs.comicWiki.glide.Glide
 import kotlin.random.Random
 
@@ -20,21 +18,83 @@ class MainViewModel : ViewModel() {
     var height = 500
     private val random = Random(System.currentTimeMillis())
 
+    companion object {
+        fun URL2Path(str: String): String {
+            return str.substringAfter("api/").substringBeforeLast("/")
+        }
+    }
+
     // TODO: references
     private val comicVineAPI = ComicVineAPI.create()
     private val comicVineRepo = ComicVineRepo(comicVineAPI)
-    private val characters = MutableLiveData<List<Character>>()
+    private val characterList = MutableLiveData<List<Character>>()
+    private val teamList = MutableLiveData<List<Team>>()
+    private val team_apiPath = MutableLiveData<String>()
+    private val team = MutableLiveData<Team>()
+    private val powers = MutableLiveData<List<Power>>()
 
-    fun netFetchCharacters() = viewModelScope.launch(
+    fun netFetchCharacterList() = viewModelScope.launch(
         context = viewModelScope.coroutineContext
                 + Dispatchers.IO
     ) {
-        characters.postValue(comicVineRepo.fetchCharacters())
+        characterList.postValue(comicVineRepo.fetchCharacterList())
     }
 
-    fun observeCharacterDeck(): LiveData<List<Character>> {
-        return characters
+    fun netFetchTeamList() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        teamList.postValue(comicVineRepo.fetchTeamList())
     }
+
+    fun netFetchTeam() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        team.postValue(comicVineRepo.fetchTeam(team_apiPath.value))
+    }
+
+    fun set_team_apiPath(apiDetailURL: String) {
+        team_apiPath.value = URL2Path(apiDetailURL)
+    }
+
+    fun observeCharacterList(): LiveData<List<Character>> {
+        return characterList
+    }
+
+    fun observeTeamList(): LiveData<List<Team>> {
+        return teamList
+    }
+
+
+    fun getCharacterListAt(position: Int): Character? {
+        val localList = characterList.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getCharacterListCount(): Int {
+        return characterList.value?.size ?: 0
+    }
+
+    fun getTeamListAt(position: Int): Team? {
+        val localList = teamList.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getTeamListCount(): Int {
+        return teamList.value?.size ?: 0
+    }
+
 
     private fun safePiscumURL(): String {
         val builder = Uri.Builder()
@@ -61,9 +121,9 @@ class MainViewModel : ViewModel() {
             )
 //        val url =
 //            "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/577-scarlet-spider.jpg"
-        val url = characters.value?.get(0)?.image?.imageURL
+        val url = characterList.value?.get(0)?.image?.imageURL
         Log.d(javaClass.simpleName, "Built: $url")
-        println(characters.value?.get(1)?.name.toString())
+        println(characterList.value?.get(1)?.name.toString())
         return url.toString()
     }
 
@@ -71,17 +131,4 @@ class MainViewModel : ViewModel() {
         Glide.fetch(randomHeroURL(), safePiscumURL(), imageView)
     }
 
-    fun getCharacterAt(position: Int): Character? {
-        val localList = characters.value?.toList()
-        localList?.let {
-            if (position >= it.size)
-                return null
-            return it[position]
-        }
-        return null
-    }
-
-    fun getCharactersCount(): Int {
-        return characters.value?.size ?: 0
-    }
 }

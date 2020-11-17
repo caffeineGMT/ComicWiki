@@ -1,16 +1,12 @@
 package edu.utcs.comicWiki.ui
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -26,21 +22,39 @@ class HomeFragment : Fragment() {
 
     // TODO: references
     private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var teamListAdapter: TeamListAdapter
+    private lateinit var characterAdapter: CharacterListAdapter
 
-    // TODO: private vars
-    private lateinit var swipe: SwipeRefreshLayout
+    //TODO: data observer
+    private fun initObservers() {
+        viewModel.observeTeamList().observe(viewLifecycleOwner, Observer {
+            teamListAdapter.notifyDataSetChanged()
+        })
 
-    // TODO: data observer
+        viewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
+            characterAdapter.notifyDataSetChanged()
+        })
+    }
 
-    // TODO: action bar interaction
+    // TODO: set up adapter
+    private fun initView(root: View) {
+        // TODO: characterList
+        val characterList_rv = root.findViewById<RecyclerView>(R.id.characterList_rv)
+        characterAdapter = CharacterListAdapter(viewModel)
+        characterList_rv.adapter = characterAdapter
+        characterList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-    // TODO: adapter
+        // TODO: teamList
+        val teamList_rv = root.findViewById<RecyclerView>(R.id.teamList_rv)
+        teamListAdapter = TeamListAdapter(viewModel)
+        teamList_rv.adapter = teamListAdapter
+        teamList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-    // TODO: swipe
-    private fun initSwipeLayout(root: View) {
-        swipe = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
-        swipe.setOnRefreshListener {
-        }
+        // TODO: swipe
+        val swipe = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
+        swipe.isEnabled = false
+
+        // TODO: action bar
     }
 
     override fun onCreateView(
@@ -48,12 +62,13 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // TODO: fragment
         val root = inflater.inflate(R.layout.home_fragment, container, false)
 
-        // TODO: viewModel observers
+        viewModel.netFetchTeamList()
+        viewModel.netFetchCharacterList()
 
-        // TODO: UI interactions
+        initView(root)
+        initObservers()
 
         return root
     }

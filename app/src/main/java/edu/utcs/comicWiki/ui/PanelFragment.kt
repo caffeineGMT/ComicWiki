@@ -38,14 +38,14 @@ class PanelFragment :
             viewModel.height = height
         }
         //SSS
-        viewModel.observeCharacterDeck().observe(viewLifecycleOwner, Observer {
+        viewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
             tv.text = it[0].deck
             Log.d(javaClass.simpleName, it[0].image.imageURL)
             Glide.fetch(it[0].image.imageURL,it[0].image.imageURL,ib)
         })
         // When clicked, refresh
         tv.setOnLongClickListener{
-            viewModel.netFetchCharacters()
+            viewModel.netFetchCharacterList()
             // also works: return@setOnLongClickListener true
             true
         }
@@ -53,7 +53,7 @@ class PanelFragment :
             viewModel.netFetchImage(ib)
         }
         // Fetch our initial contents
-        viewModel.netFetchCharacters()
+        viewModel.netFetchCharacterList()
         viewModel.netFetchImage(ib)
         //EEE // XXX Write me
     }

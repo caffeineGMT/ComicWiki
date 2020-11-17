@@ -6,39 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import edu.utcs.comicWiki.R
 
-class CharacterFragment : Fragment() {
+class TeamFragment : Fragment() {
     // TODO: static var/method
     companion object {
-        fun newInstance(): CharacterFragment {
-            return CharacterFragment()
+        fun newInstance(): TeamFragment {
+            return TeamFragment()
         }
     }
 
     // TODO: references
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var adapter: CharacterListAdapter
+    private lateinit var adapter: TeamAdapter
 
     //TODO: data observer
     private fun initObservers() {
-        viewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
-            adapter.notifyDataSetChanged()
-        })
-
+//        viewModel.observeTeam().observe(viewLifecycleOwner, Observer {
+//            adapter.notifyDataSetChanged()
+//        })
     }
 
     // TODO: set up adapter
     private fun initView(root: View) {
         // TODO: adpater
-        val rv = root.findViewById<RecyclerView>(R.id.teamList_rv)
-        adapter = CharacterListAdapter(viewModel)
+        val rv = root.findViewById<RecyclerView>(R.id.teamMembers_rv)
+        adapter = TeamAdapter(viewModel)
         rv.adapter = adapter
-        rv.layoutManager = LinearLayoutManager(context)
+        rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         // TODO: swipe
         val swipe = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
@@ -52,9 +50,9 @@ class CharacterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.character_fragment, container, false)
+        val root = inflater.inflate(R.layout.team_fragment, container, false)
 
-        viewModel.netFetchCharacterList()
+        viewModel.netFetchTeam()
 
         initView(root)
         initObservers()
