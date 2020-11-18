@@ -18,6 +18,7 @@ class MainViewModel : ViewModel() {
     var height = 500
     private val random = Random(System.currentTimeMillis())
 
+    // TODO: helper function
     companion object {
         fun URL2Path(str: String): String {
             return str.substringAfter("api/").substringBeforeLast("/")
@@ -33,6 +34,9 @@ class MainViewModel : ViewModel() {
     private val team = MutableLiveData<Team>()
     private val powers = MutableLiveData<List<Power>>()
 
+    private val searchedCharacterResults = MutableLiveData<List<Character>>()
+
+    // TODO: characterList
     fun netFetchCharacterList() = viewModelScope.launch(
         context = viewModelScope.coroutineContext
                 + Dispatchers.IO
@@ -40,32 +44,9 @@ class MainViewModel : ViewModel() {
         characterList.postValue(comicVineRepo.fetchCharacterList())
     }
 
-    fun netFetchTeamList() = viewModelScope.launch(
-        context = viewModelScope.coroutineContext
-                + Dispatchers.IO
-    ) {
-        teamList.postValue(comicVineRepo.fetchTeamList())
-    }
-
-    fun netFetchTeam() = viewModelScope.launch(
-        context = viewModelScope.coroutineContext
-                + Dispatchers.IO
-    ) {
-        team.postValue(comicVineRepo.fetchTeam(team_apiPath.value))
-    }
-
-    fun set_team_apiPath(apiDetailURL: String) {
-        team_apiPath.value = URL2Path(apiDetailURL)
-    }
-
     fun observeCharacterList(): LiveData<List<Character>> {
         return characterList
     }
-
-    fun observeTeamList(): LiveData<List<Team>> {
-        return teamList
-    }
-
 
     fun getCharacterListAt(position: Int): Character? {
         val localList = characterList.value?.toList()
@@ -79,6 +60,18 @@ class MainViewModel : ViewModel() {
 
     fun getCharacterListCount(): Int {
         return characterList.value?.size ?: 0
+    }
+
+    // TODO: teamList
+    fun netFetchTeamList() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        teamList.postValue(comicVineRepo.fetchTeamList())
+    }
+
+    fun observeTeamList(): LiveData<List<Team>> {
+        return teamList
     }
 
     fun getTeamListAt(position: Int): Team? {
@@ -95,6 +88,64 @@ class MainViewModel : ViewModel() {
         return teamList.value?.size ?: 0
     }
 
+    // TODO: single team
+    fun netFetchTeam() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        team.postValue(comicVineRepo.fetchTeam(team_apiPath.value))
+    }
+
+    fun observeTeam(): LiveData<Team> {
+        return team
+    }
+
+    fun set_team_apiPath(apiDetailURL: String) {
+        team_apiPath.value = URL2Path(apiDetailURL)
+    }
+
+    fun getTeamMemberAt(position: Int): Character? {
+        val localList = team.value?.characterList?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getTeamMemberCount(): Int {
+        return team.value?.characterList?.size ?: 0
+    }
+
+
+    fun netFetch_SearchCharacter(keyWord: String) {
+        viewModelScope.launch(
+            context = viewModelScope.coroutineContext
+                    + Dispatchers.IO
+        ) {
+            searchedCharacterResults.postValue(comicVineRepo.searchCharacters(keyWord))
+        }
+    }
+
+    fun observeSearchResult(): LiveData<List<Character>> {
+        return searchedCharacterResults
+    }
+
+    fun getSearchResultsAt(position: Int): Character? {
+        val localList = searchedCharacterResults.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getSearchResultsCount(): Int {
+        return searchedCharacterResults.value?.size ?: 0
+    }
+    
 
     private fun safePiscumURL(): String {
         val builder = Uri.Builder()
@@ -130,5 +181,8 @@ class MainViewModel : ViewModel() {
     fun netFetchImage(imageView: ImageView) {
         Glide.fetch(randomHeroURL(), safePiscumURL(), imageView)
     }
+
+    
+
 
 }

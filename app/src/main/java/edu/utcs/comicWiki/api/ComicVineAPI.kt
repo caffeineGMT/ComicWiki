@@ -4,9 +4,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ComicVineAPI {
-    
+
     var apiKey: String
         get() = "b685154d28f6b3fc55b27a06dfaed34041028bd2"
         set(value) = TODO()
@@ -22,6 +23,9 @@ interface ComicVineAPI {
 
     @GET("{team}/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json")
     suspend fun fetchTeam(@Path("team") team_apiPath: String?): TeamResponse
+
+    @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=5&resources=character")
+    suspend fun searchCharacters(@Query("query") keyWord: String): CharacterListResponse
 
     class CharacterListResponse(val results: List<Character>)
     class PowerListResponse(val results: List<Power>)

@@ -17,4 +17,9 @@ class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
         return comicVineAPI.fetchTeam(team_apiPath).results
     }
 
+    suspend fun searchCharacters(keyWord: String): List<Character>? {
+        println(keyWord)
+        return comicVineAPI.searchCharacters(keyWord).results
+    }
+
 }

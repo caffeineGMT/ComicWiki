@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicWiki.R
 import edu.utcs.comicWiki.api.Team
@@ -15,7 +16,7 @@ class TeamListAdapter(private val viewModel: MainViewModel) :
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var teamImage = itemView.findViewById<ImageView>(R.id.teamImage)
+        private var teamImage = itemView.findViewById<ImageView>(R.id.memberImage)
         private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {
@@ -25,6 +26,11 @@ class TeamListAdapter(private val viewModel: MainViewModel) :
                     viewModel.set_team_apiPath(url)
                 }
                 viewModel.netFetchTeam()
+
+                (itemView.context as FragmentActivity).supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.test, TeamFragment.newInstance())
+                    .commit()
             }
         }
 

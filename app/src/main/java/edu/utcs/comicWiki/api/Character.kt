@@ -8,7 +8,9 @@ data class Character(
     @SerializedName("deck")
     val deck: String,
     @SerializedName("image")
-    val image: Image
+    val image: Image,
+    @SerializedName("api_detail_url")
+    val apiDetailURL: String
 ) {
     data class Image(
         @SerializedName("screen_url")
