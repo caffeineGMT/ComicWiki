@@ -1,6 +1,10 @@
 package edu.utcs.comicWiki.api
 
 class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
+    suspend fun fetCharacterFromPath(characterPath: String?): Character {
+        return comicVineAPI.fetchCharacterFromPath(characterPath).results
+    }
+
     suspend fun fetchCharacterList(): List<Character> {
         return comicVineAPI.fetchCharacters().results
     }
@@ -19,7 +23,11 @@ class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
 
     suspend fun searchCharacters(keyWord: String): List<Character>? {
         println(keyWord)
-        return comicVineAPI.searchCharacters(keyWord).results
+        return comicVineAPI.searchCharacter(keyWord).results
+    }
+
+    suspend fun fetchTeamMembers(characterList: List<String>?): List<Character>? {
+        return comicVineAPI.searchCharacters("spider-man").results
     }
 
 }

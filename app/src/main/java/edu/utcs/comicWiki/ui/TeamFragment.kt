@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import edu.utcs.comicWiki.R
 
 class TeamFragment : Fragment() {
@@ -23,12 +22,17 @@ class TeamFragment : Fragment() {
     // TODO: references
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var teamMemberAdapter: TeamMemberAdapter
+    private lateinit var friendsAdapter: TeamMemberAdapter
 
     //TODO: data observer
     private fun initObservers() {
         viewModel.observeTeam().observe(viewLifecycleOwner, Observer {
+            viewModel.netFetch_teamMembers()
+        })
+        viewModel.observeTeamMembers().observe(viewLifecycleOwner, Observer {
             teamMemberAdapter.notifyDataSetChanged()
         })
+
     }
 
     // TODO: set up adapter
@@ -37,7 +41,9 @@ class TeamFragment : Fragment() {
         val teamMembers_rv = root.findViewById<RecyclerView>(R.id.teamMembers_rv)
         teamMemberAdapter = TeamMemberAdapter(viewModel)
         teamMembers_rv.adapter = teamMemberAdapter
-        teamMembers_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        teamMembers_rv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
 
         // TODO: action bar
     }

@@ -11,14 +11,5 @@ data class Character(
     val image: Image,
     @SerializedName("api_detail_url")
     val apiDetailURL: String
-) {
-    data class Image(
-        @SerializedName("screen_url")
-        val imageURL: String
-    )
-
-    companion object {
-
-    }
-}
+)
 

@@ -25,11 +25,10 @@ class TeamMemberAdapter(private val viewModel: MainViewModel) :
         }
 
         fun bind(item: Character?) {
-            deck.text = item?.name
-//            if (item != null) {
-//                deck.text = item?.name
-////                Glide.fetch(item?.image!!.imageURL, item?.image.imageURL, teamImage)
-//            }
+            if (item != null) {
+                deck.text = item?.name
+                Glide.fetch(item?.image!!.smallURL, item?.image.thumbURL, teamImage)
+            }
         }
     }
 
@@ -41,12 +40,6 @@ class TeamMemberAdapter(private val viewModel: MainViewModel) :
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-//        var list = viewModel.observeTeam().value?.characterList?.toList()
-//        if (list != null) {
-//            for (item in list) {
-//                println(item.name)
-//            }
-//        }
         holder.bind(viewModel.getTeamMemberAt(position))
     }
 

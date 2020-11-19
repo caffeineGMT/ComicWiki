@@ -23,7 +23,7 @@ class SearchAdapter(private val viewModel: MainViewModel) :
 
         fun bind(item: Character?) {
             deck.text = item?.deck
-            Glide.fetch(item?.image!!.imageURL,item?.image.imageURL, searchImage)
+            Glide.fetch(item?.image!!.screenURL,item?.image.screenURL, searchImage)
         }
     }
 

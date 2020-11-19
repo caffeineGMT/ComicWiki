@@ -32,6 +32,9 @@ class MainViewModel : ViewModel() {
     private val teamList = MutableLiveData<List<Team>>()
     private val team_apiPath = MutableLiveData<String>()
     private val team = MutableLiveData<Team>()
+    private val teamMembers = MutableLiveData<List<Character>>()
+    private val teamFriends = MutableLiveData<List<Character>>()
+    private val teamEnemies = MutableLiveData<List<Character>>()
     private val powers = MutableLiveData<List<Power>>()
 
     private val searchedCharacterResults = MutableLiveData<List<Character>>()
@@ -105,8 +108,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun getTeamMemberAt(position: Int): Character? {
-        val localList = team.value?.characterList?.toList()
-        localList?.let {
+        val local = teamMembers.value?.toList()
+        local?.let {
             if (position >= it.size)
                 return null
             return it[position]
@@ -115,10 +118,11 @@ class MainViewModel : ViewModel() {
     }
 
     fun getTeamMemberCount(): Int {
-        return team.value?.characterList?.size ?: 0
+        return teamMembers.value?.size ?: 0
     }
 
 
+    //region: implements search
     fun netFetch_SearchCharacter(keyWord: String) {
         viewModelScope.launch(
             context = viewModelScope.coroutineContext
@@ -145,8 +149,79 @@ class MainViewModel : ViewModel() {
     fun getSearchResultsCount(): Int {
         return searchedCharacterResults.value?.size ?: 0
     }
-    
 
+    // endregion
+
+
+    // region: implements teamMembers
+    fun netFetch_teamMembers() {
+        viewModelScope.launch(
+            context = viewModelScope.coroutineContext
+                    + Dispatchers.IO
+        ) {
+            val limit = 10
+            val characterList = team.value?.characterList
+            val result = mutableListOf<Character>()
+
+            if (characterList.isNullOrEmpty())
+                return@launch
+
+            if (characterList.size > limit) {
+                val paths = mutableListOf<String>()
+                for (i in 0..limit)
+                    paths.add(URL2Path(characterList[i].apiDetailURL))
+                for (path in paths)
+                    result.add(comicVineRepo.fetCharacterFromPath(path))
+            } else {
+                val paths = characterList.map {
+                    URL2Path(it.apiDetailURL)
+                }
+                for (path in paths)
+                    result.add(comicVineRepo.fetCharacterFromPath(path))
+            }
+
+            teamMembers.postValue(result)
+        }
+    }
+
+    fun observeTeamMembers(): LiveData<List<Character>> {
+        return teamMembers
+    }
+
+    fun netFetch_teamFriends() {
+        viewModelScope.launch(
+            context = viewModelScope.coroutineContext
+                    + Dispatchers.IO
+        ) {
+            val names = team.value?.characterFriendsList?.map {
+                it.name
+            }
+            teamFriends.postValue(comicVineRepo.fetchTeamMembers(names))
+        }
+    }
+
+    fun observeTeamFriends(): LiveData<List<Character>> {
+        return teamFriends
+    }
+
+    fun netFetch_teamEnemies() {
+        viewModelScope.launch(
+            context = viewModelScope.coroutineContext
+                    + Dispatchers.IO
+        ) {
+            val names = team.value?.characterEnemiesList?.map {
+                it.name
+            }
+            teamEnemies.postValue(comicVineRepo.fetchTeamMembers(names))
+        }
+    }
+
+    fun observeTeamEnemies(): LiveData<List<Character>> {
+        return teamEnemies
+    }
+    // endregion
+
+    // region: other
     private fun safePiscumURL(): String {
         val builder = Uri.Builder()
         builder.scheme("https")
@@ -172,7 +247,7 @@ class MainViewModel : ViewModel() {
             )
 //        val url =
 //            "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/577-scarlet-spider.jpg"
-        val url = characterList.value?.get(0)?.image?.imageURL
+        val url = characterList.value?.get(0)?.image?.screenURL
         Log.d(javaClass.simpleName, "Built: $url")
         println(characterList.value?.get(1)?.name.toString())
         return url.toString()
@@ -182,7 +257,6 @@ class MainViewModel : ViewModel() {
         Glide.fetch(randomHeroURL(), safePiscumURL(), imageView)
     }
 
-    
-
+    // endregion
 
 }

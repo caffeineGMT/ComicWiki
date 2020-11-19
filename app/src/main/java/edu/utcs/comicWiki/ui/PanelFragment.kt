@@ -40,8 +40,8 @@ class PanelFragment :
         //SSS
         viewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
             tv.text = it[0].deck
-            Log.d(javaClass.simpleName, it[0].image.imageURL)
-            Glide.fetch(it[0].image.imageURL,it[0].image.imageURL,ib)
+            Log.d(javaClass.simpleName, it[0].image.screenURL)
+            Glide.fetch(it[0].image.screenURL,it[0].image.screenURL,ib)
         })
         // When clicked, refresh
         tv.setOnLongClickListener{

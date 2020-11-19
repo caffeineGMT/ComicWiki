@@ -12,6 +12,9 @@ interface ComicVineAPI {
         get() = "b685154d28f6b3fc55b27a06dfaed34041028bd2"
         set(value) = TODO()
 
+    @GET("{characterPath}/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=20")
+    suspend fun fetchCharacterFromPath(@Path("characterPath") characterPath: String?): CharacterResponse
+
     @GET("characters/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=20")
     suspend fun fetchCharacters(): CharacterListResponse
 
@@ -21,12 +24,17 @@ interface ComicVineAPI {
     @GET("teams/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=20")
     suspend fun fetchTeams(): TeamListResponse
 
-    @GET("{team}/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json")
-    suspend fun fetchTeam(@Path("team") team_apiPath: String?): TeamResponse
+    @GET("{teamPath}/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json")
+    suspend fun fetchTeam(@Path("teamPath") team_apiPath: String?): TeamResponse
 
     @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=5&resources=character")
-    suspend fun searchCharacters(@Query("query") keyWord: String): CharacterListResponse
+    suspend fun searchCharacter(@Query("query") keyWord: String): CharacterListResponse
 
+    @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&resources=character")
+    suspend fun searchCharacters(@Query("query") keyWords: String): CharacterListResponse
+
+
+    class CharacterResponse(val results: Character)
     class CharacterListResponse(val results: List<Character>)
     class PowerListResponse(val results: List<Power>)
     class TeamListResponse(val results: List<Team>)

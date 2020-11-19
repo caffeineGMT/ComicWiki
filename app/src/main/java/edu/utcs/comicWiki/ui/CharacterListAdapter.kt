@@ -23,7 +23,7 @@ class CharacterListAdapter(private val viewModel: MainViewModel) :
 
         fun bind(item: Character?) {
             deck.text = item?.deck
-            Glide.fetch(item?.image!!.imageURL,item?.image.imageURL, characterImage)
+            Glide.fetch(item?.image!!.screenURL,item?.image.screenURL, characterImage)
         }
     }
 

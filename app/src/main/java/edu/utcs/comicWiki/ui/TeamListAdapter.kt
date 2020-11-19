@@ -30,6 +30,7 @@ class TeamListAdapter(private val viewModel: MainViewModel) :
                 (itemView.context as FragmentActivity).supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.test, TeamFragment.newInstance())
+                    .addToBackStack(null)
                     .commit()
             }
         }
