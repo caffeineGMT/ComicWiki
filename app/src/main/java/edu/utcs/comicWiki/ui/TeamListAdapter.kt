@@ -37,7 +37,7 @@ class TeamListAdapter(private val viewModel: MainViewModel) :
 
         fun bind(item: Team?) {
             deck.text = item?.deck
-//            Glide.fetch(item?.image!!.thumbURL,item?.image.thumbURL, teamImage)
+            Glide.fetch(item?.image!!.thumbURL,item?.image.thumbURL, teamImage)
         }
     }
 

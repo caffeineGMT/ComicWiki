@@ -13,8 +13,6 @@ data class Character(
     val characterFriends: List<Character>,
     @SerializedName("gender")
     val gender: String,
-    @SerializedName("origin")
-    val origin: String,
     @SerializedName("real_name")
     val realName: String,
     @SerializedName("powers")
