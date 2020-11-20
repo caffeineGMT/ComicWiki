@@ -15,8 +15,8 @@ class CharacterListAdapter(private val viewModel: MainViewModel) :
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var characterImage = itemView.findViewById<ImageView>(R.id.memberImage)
-        private var deck = itemView.findViewById<TextView>(R.id.deck)
+        private var characterImage = itemView.findViewById<ImageView>(R.id.characterImage)
+        private var deck = itemView.findViewById<TextView>(R.id.name)
 
         init {
         }

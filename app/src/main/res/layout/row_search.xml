@@ -22,7 +22,7 @@
             android:layout_height="50dp" />
 
         <TextView
-            android:id="@+id/deck"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_weight="2"
             android:layout_height="50dp" />

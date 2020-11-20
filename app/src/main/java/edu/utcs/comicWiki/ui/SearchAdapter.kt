@@ -16,7 +16,7 @@ class SearchAdapter(private val viewModel: MainViewModel) :
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var searchImage = itemView.findViewById<ImageView>(R.id.searchImage)
-        private var deck = itemView.findViewById<TextView>(R.id.deck)
+        private var deck = itemView.findViewById<TextView>(R.id.name)
 
         init {
         }

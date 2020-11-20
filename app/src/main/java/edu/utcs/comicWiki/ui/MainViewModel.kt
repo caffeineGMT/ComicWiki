@@ -120,7 +120,7 @@ class MainViewModel : ViewModel() {
         return null
     }
 
-    fun getTeamMemberCount(): Int {
+    fun getTeamMembersCount(): Int {
         return teamMembers.value?.size ?: 0
     }
 
