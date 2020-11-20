@@ -1,8 +1,9 @@
-package edu.utcs.comicWiki.api
+package edu.utcs.comicWiki.model
 
 import com.google.gson.annotations.SerializedName
 
 data class Image(
+    // standard info
     @SerializedName("icon_url")
     val iconURL: String,
     @SerializedName("medium_url")
@@ -10,7 +11,7 @@ data class Image(
     @SerializedName("screen_url")
     val screenURL: String,
     @SerializedName("screen_large_url")
-    val scrennLargeURL: String,
+    val screenLargeURL: String,
     @SerializedName("small_url")
     val smallURL: String,
     @SerializedName("super_url")

@@ -1,5 +1,8 @@
 package edu.utcs.comicWiki.api
 
+import edu.utcs.comicWiki.model.Character
+import edu.utcs.comicWiki.model.Power
+import edu.utcs.comicWiki.model.Team
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

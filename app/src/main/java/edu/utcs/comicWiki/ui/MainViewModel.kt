@@ -11,6 +11,9 @@ import edu.utcs.comicWiki.api.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import edu.utcs.comicWiki.glide.Glide
+import edu.utcs.comicWiki.model.Character
+import edu.utcs.comicWiki.model.Power
+import edu.utcs.comicWiki.model.Team
 import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
@@ -160,7 +163,7 @@ class MainViewModel : ViewModel() {
                     + Dispatchers.IO
         ) {
             val limit = 10
-            val characterList = team.value?.characterList
+            val characterList = team.value?.characters
             val result = mutableListOf<Character>()
 
             if (characterList.isNullOrEmpty())
@@ -193,7 +196,7 @@ class MainViewModel : ViewModel() {
             context = viewModelScope.coroutineContext
                     + Dispatchers.IO
         ) {
-            val names = team.value?.characterFriendsList?.map {
+            val names = team.value?.characterFriends?.map {
                 it.name
             }
             teamFriends.postValue(comicVineRepo.fetchTeamMembers(names))
@@ -209,7 +212,7 @@ class MainViewModel : ViewModel() {
             context = viewModelScope.coroutineContext
                     + Dispatchers.IO
         ) {
-            val names = team.value?.characterEnemiesList?.map {
+            val names = team.value?.characterEnemies?.map {
                 it.name
             }
             teamEnemies.postValue(comicVineRepo.fetchTeamMembers(names))

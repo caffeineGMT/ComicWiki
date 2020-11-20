@@ -1,5 +1,9 @@
 package edu.utcs.comicWiki.api
 
+import edu.utcs.comicWiki.model.Character
+import edu.utcs.comicWiki.model.Power
+import edu.utcs.comicWiki.model.Team
+
 class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
     suspend fun fetCharacterFromPath(characterPath: String?): Character {
         return comicVineAPI.fetchCharacterFromPath(characterPath).results

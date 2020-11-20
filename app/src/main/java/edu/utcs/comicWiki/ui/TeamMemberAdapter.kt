@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicWiki.R
-import edu.utcs.comicWiki.api.Character
+import edu.utcs.comicWiki.model.Character
 import edu.utcs.comicWiki.glide.Glide
 
 class TeamMemberAdapter(private val viewModel: MainViewModel) :

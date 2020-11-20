@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicWiki.R
-import edu.utcs.comicWiki.api.Team
+import edu.utcs.comicWiki.model.Team
 import edu.utcs.comicWiki.glide.Glide
 
 class TeamListAdapter(private val viewModel: MainViewModel) :
@@ -37,7 +37,7 @@ class TeamListAdapter(private val viewModel: MainViewModel) :
 
         fun bind(item: Team?) {
             deck.text = item?.deck
-            Glide.fetch(item?.image!!.imageURL,item?.image.imageURL, teamImage)
+//            Glide.fetch(item?.image!!.thumbURL,item?.image.thumbURL, teamImage)
         }
     }
 
