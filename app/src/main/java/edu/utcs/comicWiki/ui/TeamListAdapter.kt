@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicWiki.R
 import edu.utcs.comicWiki.model.Team
 import edu.utcs.comicWiki.glide.Glide
+import edu.utcs.comicWiki.ui.team.TeamFragment
 
 class TeamListAdapter(private val viewModel: MainViewModel) :
     RecyclerView.Adapter<TeamListAdapter.VH>() {

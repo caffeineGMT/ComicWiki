@@ -1,17 +1,16 @@
-package edu.utcs.comicWiki.ui
+package edu.utcs.comicWiki.ui.team
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicWiki.R
+import edu.utcs.comicWiki.ui.MainViewModel
 
 class TeamFragment : Fragment() {
     companion object {

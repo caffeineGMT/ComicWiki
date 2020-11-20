@@ -1,4 +1,4 @@
-package edu.utcs.comicWiki.ui
+package edu.utcs.comicWiki.ui.team
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicWiki.R
 import edu.utcs.comicWiki.model.Character
 import edu.utcs.comicWiki.glide.Glide
+import edu.utcs.comicWiki.ui.MainViewModel
 
 class TeamCharacterAdapter(private val viewModel: MainViewModel) :
     RecyclerView.Adapter<TeamCharacterAdapter.VH>() {

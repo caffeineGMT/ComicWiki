@@ -1,4 +1,4 @@
-package edu.utcs.comicWiki.ui
+package edu.utcs.comicWiki.ui.character
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import edu.utcs.comicWiki.R
+import edu.utcs.comicWiki.ui.CharacterListAdapter
+import edu.utcs.comicWiki.ui.MainViewModel
 
 class CharacterFragment : Fragment() {
     // TODO: static var/method
