@@ -9,7 +9,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "witchel.cs371m.catnet"
+        applicationId "edu.utcs.comicwiki"
         minSdkVersion 27
         targetSdkVersion 28
         versionCode 1
