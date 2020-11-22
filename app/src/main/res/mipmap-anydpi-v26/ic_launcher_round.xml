@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background android:drawable="@drawable/ic_launcher_background"/>
-    <foreground android:drawable="@drawable/marvel_spiderman_icon_graphic_t_shirt_1000x1000"/>
+    <foreground android:drawable="@drawable/man_saver_spider_spiderman_super_superhero_icon_1320195497035393176_0"/>
 </adaptive-icon>
