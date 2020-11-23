@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ import edu.utcs.comicwiki.R
 
 class SearchFragment : Fragment() {
 
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by activityViewModels()
     private lateinit var searchAdapter: SearchAdapter
 
     override fun onCreateView(
@@ -26,7 +27,6 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        searchViewModel = SearchViewModel()
         val root = inflater.inflate(R.layout.fragment_search, container, false)
 
         initView(root)
