@@ -11,13 +11,12 @@ class CreationViewModel : ViewModel() {
     fun addComicNode(comicNode: ComicNode) {
 
 
-
         nodes.add(comicNode)
-        Log.d(javaClass.simpleName, nodes[0].name)
-    }
-
-    fun debug() {
-//        println(nodes.value?.get(0)?.name + nodes.value?.get(0)?.fromNode?.name + nodes.value?.get(0)?.toNode?.name)
+//        Log.d(
+//            javaClass.simpleName,
+//            nodes[0].name + nodes[0].fromNode?.name + nodes[0].toNode?.name
+//        )
+        Log.d(javaClass.simpleName, nodes.size.toString())
     }
 
 }

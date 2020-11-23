@@ -1,6 +1,5 @@
 package edu.utcs.comicwiki.ui.creation
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -12,10 +11,13 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import edu.utcs.comicwiki.R
-import edu.utcs.comicwiki.R.color.design_default_color_primary_dark
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
-import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.imageURLKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.apiDetailURLKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.nameKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.smallImageURLKey
 import kotlinx.android.synthetic.main.fragment_creation.*
 
 class CreationFragment : Fragment() {
@@ -27,7 +29,7 @@ class CreationFragment : Fragment() {
     }
 
     private val creationViewModel: CreationViewModel by activityViewModels()
-    private var tempNode = ComicNode()
+    private var curNode = ComicNode()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +54,9 @@ class CreationFragment : Fragment() {
             injectComicNode(this.requireContext(), CENTER_RC)
         }
         fromNode1.setOnClickListener {
-            tempNode.fromNode = ComicNode()
             injectComicNode(this.requireContext(), FROM_RC)
         }
         toNode1.setOnClickListener {
-            tempNode.toNode = ComicNode()
             injectComicNode(this.requireContext(), TO_RC)
         }
 
@@ -64,14 +64,16 @@ class CreationFragment : Fragment() {
             centerNode.setImageBitmap(null)
             fromNode1.setImageBitmap(null)
             toNode1.setImageBitmap(null)
+
+            curNode = ComicNode()
         }
         save.setOnClickListener {
-            creationViewModel.addComicNode(tempNode)
+            creationViewModel.addComicNode(curNode)
         }
 
     }
 
-    fun injectComicNode(context: Context, requestCode: Int) {
+    private fun injectComicNode(context: Context, requestCode: Int) {
         val intent = Intent(context, ComicNodeSearchActivity::class.java)
         startActivityForResult(intent, requestCode)
     }
@@ -79,17 +81,45 @@ class CreationFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            CENTER_RC -> data?.extras?.apply {
-                val url = this.getString(imageURLKey)
-                Glide.fetch(url, url, centerNode)
+            CENTER_RC -> {
+                data?.extras?.apply {
+                    val name = getString(nameKey)
+                    val deck = getString(deckKey)
+                    val smallImageURL = getString(smallImageURLKey)
+                    val largeImageURL = getString(largeImageURLKey)
+                    val apiDetailURL = getString(apiDetailURLKey)
+
+                    Glide.fetch(largeImageURL, largeImageURL, centerNode)
+                    curNode.apply {
+                        this.name = name
+                        this.deck = deck
+                        this.smallImageURL = smallImageURL
+                        this.largeImageURL = largeImageURL
+                        this.apiDetailURL = apiDetailURL
+                    }
+                }
             }
             FROM_RC -> data?.extras?.apply {
-                val url = this.getString(imageURLKey)
-                Glide.fetch(url, url, fromNode1)
+                val name = getString(nameKey)
+                val deck = getString(deckKey)
+                val smallImageURL = getString(smallImageURLKey)
+                val largeImageURL = getString(largeImageURLKey)
+                val apiDetailURL = getString(apiDetailURLKey)
+
+                Glide.fetch(smallImageURL, smallImageURL, fromNode1)
+                curNode.fromNode =
+                    ComicNode(null, curNode, name, deck, smallImageURL, largeImageURL, apiDetailURL)
             }
             TO_RC -> data?.extras?.apply {
-                val url = this.getString(imageURLKey)
-                Glide.fetch(url, url, toNode1)
+                val name = getString(nameKey)
+                val deck = getString(deckKey)
+                val smallImageURL = getString(smallImageURLKey)
+                val largeImageURL = getString(largeImageURLKey)
+                val apiDetailURL = getString(apiDetailURLKey)
+
+                Glide.fetch(smallImageURL, smallImageURL, toNode1)
+                curNode.toNode =
+                    ComicNode(curNode, null, name, deck, smallImageURL, largeImageURL, apiDetailURL)
             }
         }
     }
