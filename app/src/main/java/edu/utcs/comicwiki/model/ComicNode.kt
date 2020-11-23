@@ -1,10 +1,10 @@
 package edu.utcs.comicwiki.model
 
 data class ComicNode(
-    var fromNode: ComicNode?,
-    var toNode: ComicNode?,
-    var name: String?,
-    val image: Image?,
-    val deck: String?,
-    val apiDetailURL: String?
+    var fromNode: ComicNode? = null,
+    var toNode: ComicNode? = null,
+    var name: String? = null,
+    val image: Image? = null,
+    val deck: String? = null,
+    val apiDetailURL: String? = null
 )

@@ -1,6 +1,8 @@
 package edu.utcs.comicwiki.ui.creation
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +13,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.R.color.design_default_color_primary_dark
+import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.imageURLKey
+import kotlinx.android.synthetic.main.fragment_creation.*
 
 class CreationFragment : Fragment() {
 
+    companion object {
+        const val CENTER_RC = 0
+        const val FROM_RC = 1
+        const val TO_RC = 2
+    }
+
     private val creationViewModel: CreationViewModel by activityViewModels()
-    private var tempNode = ComicNode(null, null, null, null, null, null)
+    private var tempNode = ComicNode()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +41,6 @@ class CreationFragment : Fragment() {
         return root
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun initView(root: View) {
         val centerNode = root.findViewById<ImageButton>(R.id.centerNode)
         val fromNode1 = root.findViewById<ImageButton>(R.id.fromNode1)
@@ -39,28 +49,48 @@ class CreationFragment : Fragment() {
         val save = root.findViewById<Button>(R.id.save)
 
         centerNode.setOnClickListener {
-            // TODO: setting a intent here
-            centerNode.setBackgroundColor(design_default_color_primary_dark)
-            tempNode.name = "this is center node name"
-//            println(tempNode.name)
-            //
+            injectComicNode(this.requireContext(), CENTER_RC)
         }
         fromNode1.setOnClickListener {
-            tempNode.fromNode = ComicNode(null, null, "this if from Node name", null, null, null)
-//            println(tempNode.name + tempNode.fromNode!!.name)
+            tempNode.fromNode = ComicNode()
+            injectComicNode(this.requireContext(), FROM_RC)
         }
         toNode1.setOnClickListener {
-            tempNode.toNode = ComicNode(null, null, "this if to Node name", null, null, null)
-//            println(tempNode.name + tempNode.fromNode!!.name + tempNode.toNode!!.name)
+            tempNode.toNode = ComicNode()
+            injectComicNode(this.requireContext(), TO_RC)
         }
 
         clear.setOnClickListener {
-            creationViewModel.debug()
+            centerNode.setImageBitmap(null)
+            fromNode1.setImageBitmap(null)
+            toNode1.setImageBitmap(null)
         }
         save.setOnClickListener {
-//            println(tempNode.name + tempNode.fromNode!!.name + tempNode.toNode!!.name)
             creationViewModel.addComicNode(tempNode)
         }
 
+    }
+
+    fun injectComicNode(context: Context, requestCode: Int) {
+        val intent = Intent(context, ComicNodeSearchActivity::class.java)
+        startActivityForResult(intent, requestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CENTER_RC -> data?.extras?.apply {
+                val url = this.getString(imageURLKey)
+                Glide.fetch(url, url, centerNode)
+            }
+            FROM_RC -> data?.extras?.apply {
+                val url = this.getString(imageURLKey)
+                Glide.fetch(url, url, fromNode1)
+            }
+            TO_RC -> data?.extras?.apply {
+                val url = this.getString(imageURLKey)
+                Glide.fetch(url, url, toNode1)
+            }
+        }
     }
 }
