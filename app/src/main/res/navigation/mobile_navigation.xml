@@ -19,9 +19,15 @@
 
     <fragment
         android:id="@+id/navigation_creation"
-        android:name="edu.utcs.comicwiki.ui.dashboard.DashboardFragment"
+        android:name="edu.utcs.comicwiki.ui.creation.CreationFragment"
         android:label="Creation"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_creation" />
+
+    <fragment
+        android:id="@+id/navigation_connection"
+        android:name="edu.utcs.comicwiki.ui.creation.CreationFragment"
+        android:label="Creation"
+        tools:layout="@layout/fragment_creation" />
 
     <fragment
         android:id="@+id/navigation_posts"
