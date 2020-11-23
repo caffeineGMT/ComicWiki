@@ -12,14 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_search"
+        android:name="edu.utcs.comicwiki.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
         android:id="@+id/navigation_creation"
         android:name="edu.utcs.comicwiki.ui.dashboard.DashboardFragment"
-        android:label="Dashboard"
+        android:label="Creation"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_posts"
-        android:name="edu.utcs.comicwiki.ui.notifications.NotificationsFragment"
+        android:name="edu.utcs.comicwiki.ui.search.SearchFragment"
         android:label="Notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_search" />
 </navigation>

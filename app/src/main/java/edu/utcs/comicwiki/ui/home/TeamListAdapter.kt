@@ -1,4 +1,4 @@
-package edu.utcs.comicwiki.ui
+package edu.utcs.comicwiki.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.model.Team
 import edu.utcs.comicwiki.glide.Glide
+import edu.utcs.comicwiki.ui.MainViewModel
 import edu.utcs.comicwiki.ui.team.TeamFragment
 
-class TeamListAdapter(private val viewModel: MainViewModel) :
+class TeamListAdapter(private val viewModel: HomeViewModel) :
     RecyclerView.Adapter<TeamListAdapter.VH>() {
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var teamImage = itemView.findViewById<ImageView>(R.id.characterImage)
-        private var deck = itemView.findViewById<TextView>(R.id.name)
+        private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {
             itemView.setOnClickListener {
@@ -28,11 +29,11 @@ class TeamListAdapter(private val viewModel: MainViewModel) :
                 }
                 viewModel.netFetchTeam()
 
-                (itemView.context as FragmentActivity).supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.test, TeamFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
+//                (itemView.context as FragmentActivity).supportFragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.test, TeamFragment.newInstance())
+//                    .addToBackStack(null)
+//                    .commit()
             }
         }
 

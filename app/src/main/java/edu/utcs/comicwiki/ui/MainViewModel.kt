@@ -40,7 +40,6 @@ class MainViewModel : ViewModel() {
     private val teamEnemies = MutableLiveData<List<Character>>()
     private val powers = MutableLiveData<List<Power>>()
 
-    private val searchedCharacterResults = MutableLiveData<List<Character>>()
 
     // TODO: characterList
     fun netFetchCharacterList() = viewModelScope.launch(
@@ -125,35 +124,7 @@ class MainViewModel : ViewModel() {
     }
 
 
-    //region: implements search
-    fun netFetch_SearchCharacter(keyWord: String) {
-        viewModelScope.launch(
-            context = viewModelScope.coroutineContext
-                    + Dispatchers.IO
-        ) {
-            searchedCharacterResults.postValue(comicVineRepo.searchCharacters(keyWord))
-        }
-    }
 
-    fun observeSearchResult(): LiveData<List<Character>> {
-        return searchedCharacterResults
-    }
-
-    fun getSearchResultsAt(position: Int): Character? {
-        val localList = searchedCharacterResults.value?.toList()
-        localList?.let {
-            if (position >= it.size)
-                return null
-            return it[position]
-        }
-        return null
-    }
-
-    fun getSearchResultsCount(): Int {
-        return searchedCharacterResults.value?.size ?: 0
-    }
-
-    // endregion
 
 
     // region: implements teamMembers

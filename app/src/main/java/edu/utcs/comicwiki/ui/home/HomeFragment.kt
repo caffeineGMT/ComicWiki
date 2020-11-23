@@ -8,10 +8,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 
 class HomeFragment : Fragment() {
 
+    private lateinit var teamListAdapter: TeamListAdapter
+    private lateinit var characterAdapter: CharacterListAdapter
     private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
@@ -22,10 +26,35 @@ class HomeFragment : Fragment() {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
+        initView(root)
+        initObservers()
+
+
         return root
+    }
+
+    private fun initObservers() {
+        homeViewModel.observeTeamList().observe(viewLifecycleOwner, Observer {
+            teamListAdapter.notifyDataSetChanged()
+        })
+
+        homeViewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
+            characterAdapter.notifyDataSetChanged()
+        })
+    }
+
+    private fun initView(root: View) {
+        // characterList
+        val characterList_rv = root.findViewById<RecyclerView>(R.id.rv_characters)
+        characterAdapter = CharacterListAdapter(homeViewModel)
+        characterList_rv.adapter = characterAdapter
+        characterList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        // teamList
+        val teamList_rv = root.findViewById<RecyclerView>(R.id.rv_teams)
+        teamListAdapter = TeamListAdapter(homeViewModel)
+        teamList_rv.adapter = teamListAdapter
+        teamList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 }

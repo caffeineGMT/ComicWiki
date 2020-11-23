@@ -1,4 +1,4 @@
-package edu.utcs.comicwiki.ui
+package edu.utcs.comicwiki.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.model.Character
 import edu.utcs.comicwiki.glide.Glide
+import edu.utcs.comicwiki.ui.MainViewModel
 
-class CharacterListAdapter(private val viewModel: MainViewModel) :
+class CharacterListAdapter(private val viewModel: HomeViewModel) :
     RecyclerView.Adapter<CharacterListAdapter.VH>() {
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var characterImage = itemView.findViewById<ImageView>(R.id.characterImage)
-        private var deck = itemView.findViewById<TextView>(R.id.name)
+        private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {
         }

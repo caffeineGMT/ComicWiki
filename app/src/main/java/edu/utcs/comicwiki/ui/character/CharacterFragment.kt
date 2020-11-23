@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import edu.utcs.comicwiki.R
-import edu.utcs.comicwiki.ui.CharacterListAdapter
+import edu.utcs.comicwiki.ui.home.CharacterListAdapter
 import edu.utcs.comicwiki.ui.MainViewModel
 
 class CharacterFragment : Fragment() {
@@ -37,10 +37,10 @@ class CharacterFragment : Fragment() {
     // TODO: set up adapter
     private fun initView(root: View) {
         // TODO: adpater
-        val rv = root.findViewById<RecyclerView>(R.id.teamList_rv)
-        adapter = CharacterListAdapter(viewModel)
-        rv.adapter = adapter
-        rv.layoutManager = LinearLayoutManager(context)
+//        val rv = root.findViewById<RecyclerView>(R.id.teamList_rv)
+//        adapter = CharacterListAdapter(viewModel)
+//        rv.adapter = adapter
+//        rv.layoutManager = LinearLayoutManager(context)
 
         // TODO: swipe
         val swipe = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
