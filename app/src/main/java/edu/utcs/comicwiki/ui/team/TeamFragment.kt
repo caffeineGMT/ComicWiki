@@ -55,7 +55,7 @@ class TeamFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.team_fragment, container, false)
+        val root = inflater.inflate(R.layout.fragment_team, container, false)
 //        root.findViewById<WebView>(R.id.webView)
 //            .loadUrl("https://comicvine.gamespot.com/ani-men/4060-2508/")
 //        val a =
