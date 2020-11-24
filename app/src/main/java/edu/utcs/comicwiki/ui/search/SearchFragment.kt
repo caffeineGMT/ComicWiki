@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -67,7 +66,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initView(root: View) {
-        val rv_search = root.findViewById<RecyclerView>(R.id.rv_search)
+        val rv_search = root.findViewById<RecyclerView>(R.id.rv_connection)
         searchAdapter = SearchAdapter(searchViewModel)
         rv_search.adapter = searchAdapter
         rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

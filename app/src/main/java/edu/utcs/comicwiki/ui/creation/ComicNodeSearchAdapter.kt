@@ -25,7 +25,7 @@ class ComicNodeSearchAdapter(
     RecyclerView.Adapter<ComicNodeSearchAdapter.VH>() {
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var searchImage = itemView.findViewById<ImageView>(R.id.searchImage)
+        private var searchImage = itemView.findViewById<ImageView>(R.id.nodeImage)
         private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {

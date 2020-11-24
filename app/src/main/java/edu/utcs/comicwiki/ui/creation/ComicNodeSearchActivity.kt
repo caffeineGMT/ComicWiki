@@ -3,20 +3,12 @@ package edu.utcs.comicwiki.ui.creation
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.method.ScrollingMovementMethod
-import android.view.View
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import edu.utcs.comicwiki.MainActivity
 import edu.utcs.comicwiki.R
-import edu.utcs.comicwiki.ui.search.SearchAdapter
 import edu.utcs.comicwiki.ui.search.SearchViewModel
 
 class ComicNodeSearchActivity : AppCompatActivity() {
@@ -69,7 +61,7 @@ class ComicNodeSearchActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val rv_search = findViewById<RecyclerView>(R.id.rv_search)
+        val rv_search = findViewById<RecyclerView>(R.id.rv_connection)
         searchAdapter = ComicNodeSearchAdapter(searchViewModel, this)
         rv_search.adapter = searchAdapter
         rv_search.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
