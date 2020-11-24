@@ -3,7 +3,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt' // For glide
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'// For glide
 
 android {
     compileSdkVersion 28
@@ -43,6 +44,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-firestore:22.0.0'
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
     def lifecycle_version = "2.2.0"
     // ViewModel

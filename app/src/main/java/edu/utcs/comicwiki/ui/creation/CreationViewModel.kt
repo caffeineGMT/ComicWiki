@@ -6,17 +6,17 @@ import androidx.lifecycle.ViewModel
 import edu.utcs.comicwiki.model.ComicNode
 
 class CreationViewModel : ViewModel() {
-    private val nodes = mutableListOf<ComicNode>()
+    private val nodes = MutableLiveData<List<ComicNode>>().apply {
+        value = mutableListOf()
+    }
 
     fun addComicNode(comicNode: ComicNode) {
-
-
-        nodes.add(comicNode)
-//        Log.d(
-//            javaClass.simpleName,
-//            nodes[0].name + nodes[0].fromNode?.name + nodes[0].toNode?.name
-//        )
-        Log.d(javaClass.simpleName, nodes.size.toString())
+        val local = nodes.value?.toMutableList()
+        local?.let {
+            local.add(comicNode)
+            nodes.value = it
+        }
+        Log.d(javaClass.simpleName, nodes.value?.size.toString())
     }
 
 }
