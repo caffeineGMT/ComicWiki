@@ -1,6 +1,7 @@
 package edu.utcs.comicwiki.ui.connection
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
 
@@ -32,8 +34,14 @@ class ConnectionFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        creationViewModel.getComicNodes()
+    }
+
     private fun initObservers() {
         creationViewModel.observeComicNodes().observe(viewLifecycleOwner, Observer {
+            Log.d(javaClass.simpleName,it.size.toString())
             connectionAdapter.notifyDataSetChanged()
         })
     }

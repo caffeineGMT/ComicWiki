@@ -4,22 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import edu.utcs.comicwiki.model.Character
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.utcs.comicwiki.model.ComicNode
 
 class CreationViewModel : ViewModel() {
-    private val comicNodes = MutableLiveData<List<ComicNode>>().apply {
-        value = mutableListOf()
-    }
+    private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    fun addComicNode(comicNode: ComicNode) {
-        val local = comicNodes.value?.toMutableList()
-        local?.let {
-            local.add(comicNode)
-            comicNodes.value = it
-        }
-        Log.d(javaClass.simpleName, comicNodes.value?.size.toString())
-    }
+    private val comicNodes = MutableLiveData<List<ComicNode>>()
 
     fun observeComicNodes(): LiveData<List<ComicNode>> {
         return comicNodes
@@ -39,8 +30,48 @@ class CreationViewModel : ViewModel() {
         return comicNodes.value?.size ?: 0
     }
 
+    fun saveComicNode(comicNode: ComicNode) {
+        comicNode.selfID = db.collection("globalComicNodes").document().id
+        db.collection("globalComicNodes")
+            .document(comicNode.selfID)
+            .set(comicNode)
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { e ->
+            }
+    }
+
+    fun deleteComicNode(comicNode: ComicNode) {
+        db.collection("globalComicNodes")
+            .document(comicNode.selfID)
+            .delete()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { e ->
+            }
+    }
+
+    fun getComicNodes() {
+//        if (FirebaseAuth.getInstance().currentUser == null) {
+//            Log.d(javaClass.simpleName, "Can't get chat, no one is logged in")
+//            comicNodes.value = listOf()
+//            return
+//        }
+        db.collection("globalComicNodes")
+            .orderBy("timeStamp")
+            .limit(100)
+            .addSnapshotListener { querySnapshot, ex ->
+                if (ex != null) {
+                    return@addSnapshotListener
+                }
+                comicNodes.value = querySnapshot?.documents?.mapNotNull {
+                    it.toObject(ComicNode::class.java)
+                }
+            }
+    }
+
     fun moveComicNode(from: Int, to: Int) {
-        if( from == to) return
+        if (from == to) return
         val local = comicNodes.value?.toMutableList()
         local?.let {
             val fromComicNode = it[from]

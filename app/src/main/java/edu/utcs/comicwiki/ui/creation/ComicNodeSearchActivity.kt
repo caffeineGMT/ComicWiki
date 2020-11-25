@@ -14,7 +14,7 @@ import edu.utcs.comicwiki.ui.search.SearchViewModel
 class ComicNodeSearchActivity : AppCompatActivity() {
     companion object {
         const val nameKey = "nameKey"
-        const val deckKey = "largeImageURLKey"
+        const val deckKey = "deckKey"
         const val smallImageURLKey = "smallImageURLKey"
         const val largeImageURLKey = "largeImageURLKey"
         const val apiDetailURLKey = "apiDetailURLKey"

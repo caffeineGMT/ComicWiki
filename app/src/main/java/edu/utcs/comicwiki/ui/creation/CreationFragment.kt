@@ -68,7 +68,7 @@ class CreationFragment : Fragment() {
             curNode = ComicNode()
         }
         save.setOnClickListener {
-            creationViewModel.addComicNode(curNode)
+            creationViewModel.saveComicNode(curNode)
         }
 
     }
@@ -108,7 +108,7 @@ class CreationFragment : Fragment() {
 
                 Glide.fetch(smallImageURL, smallImageURL, fromNode1)
                 curNode.fromNode =
-                    ComicNode(null, curNode, name, deck, smallImageURL, largeImageURL, apiDetailURL)
+                    ComicNode()
             }
             TO_RC -> data?.extras?.apply {
                 val name = getString(nameKey)
@@ -119,7 +119,7 @@ class CreationFragment : Fragment() {
 
                 Glide.fetch(smallImageURL, smallImageURL, toNode1)
                 curNode.toNode =
-                    ComicNode(curNode, null, name, deck, smallImageURL, largeImageURL, apiDetailURL)
+                    ComicNode()
             }
         }
     }
