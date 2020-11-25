@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
@@ -25,7 +24,6 @@ class ConnectionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val root = inflater.inflate(R.layout.fragment_connection, container, false)
 
         initView(root)
@@ -41,45 +39,56 @@ class ConnectionFragment : Fragment() {
     }
 
     private fun initView(root: View) {
-        val rv_connection = root.findViewById<RecyclerView>(R.id.rv_connection)
-        connectionAdapter = ConnectionAdapter(creationViewModel)
-        rv_connection.adapter = connectionAdapter
-        rv_connection.layoutManager = GridLayoutManager(context, 5)
+        val itemTouchHelper = initTouchHelper()
+        connectionAdapter = ConnectionAdapter(creationViewModel, itemTouchHelper)
+        val rv_myComicNodes = root.findViewById<RecyclerView>(R.id.rv_myComicNodes)
+
+        rv_myComicNodes.adapter = connectionAdapter
+        rv_myComicNodes.layoutManager = GridLayoutManager(context, 7)
+        itemTouchHelper.attachToRecyclerView(rv_myComicNodes)
     }
 
-//    private val itemTouchHelper by lazy {
-//        val simpleItemTouchCallback =
-//            object : ItemTouchHelper.SimpleCallback(
-//                UP or
-//                        DOWN or
-//                        START or
-//                        END, 0
-//            ) {
-//                override fun onMove(
-//                    recyclerView: RecyclerView,
-//                    viewHolder: RecyclerView.ViewHolder,
-//                    target: RecyclerView.ViewHolder
-//                ): Boolean {
-//
-//                    val adapter = recyclerView.adapter as MainRecyclerViewAdapter
-//                    val from = viewHolder.adapterPosition
-//                    val to = target.adapterPosition
-//                    // 2. Update the backing model. Custom implementation in
-//                    //    MainRecyclerViewAdapter. You need to implement
-//                    //    reordering of the backing model inside the method.
-//                    adapter.moveItem(from, to)
-//                    // 3. Tell adapter to render the model update.
-//                    adapter.notifyItemMoved(from, to)
-//
-//                    return true
-//                }
-//
-//                override fun onSwiped(
-//                    viewHolder: RecyclerView.ViewHolder,
-//                    direction: Int
-//                ) {
-//                }
-//            }
-//        ItemTouchHelper(simpleItemTouchCallback)
-//    }
+    private fun initTouchHelper(): ItemTouchHelper {
+        val simpleItemTouchCallback =
+            object : ItemTouchHelper.SimpleCallback(
+                UP or DOWN or START or END,
+                ItemTouchHelper.START
+            ) {
+                override fun onSelectedChanged(
+                    viewHolder: RecyclerView.ViewHolder?,
+                    actionState: Int
+                ) {
+                    super.onSelectedChanged(viewHolder, actionState)
+                    if (actionState == ACTION_STATE_DRAG) {
+                        viewHolder?.itemView?.alpha = 0.5f
+                    }
+                }
+
+                override fun clearView(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ) {
+                    super.clearView(recyclerView, viewHolder)
+                    viewHolder.itemView.alpha = 1.0f
+                }
+
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    val from = viewHolder.adapterPosition
+                    val to = target.adapterPosition
+
+                    creationViewModel.moveComicNode(from, to)
+                    connectionAdapter.notifyItemMoved(from, to)
+
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                }
+            }
+        return ItemTouchHelper(simpleItemTouchCallback)
+    }
 }

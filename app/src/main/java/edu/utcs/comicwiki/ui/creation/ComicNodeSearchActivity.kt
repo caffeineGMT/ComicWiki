@@ -61,7 +61,7 @@ class ComicNodeSearchActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val rv_search = findViewById<RecyclerView>(R.id.rv_connection)
+        val rv_search = findViewById<RecyclerView>(R.id.rv_myComicNodes)
         searchAdapter = ComicNodeSearchAdapter(searchViewModel, this)
         rv_search.adapter = searchAdapter
         rv_search.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

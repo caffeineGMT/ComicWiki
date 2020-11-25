@@ -66,7 +66,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initView(root: View) {
-        val rv_search = root.findViewById<RecyclerView>(R.id.rv_connection)
+        val rv_search = root.findViewById<RecyclerView>(R.id.rv_myComicNodes)
         searchAdapter = SearchAdapter(searchViewModel)
         rv_search.adapter = searchAdapter
         rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

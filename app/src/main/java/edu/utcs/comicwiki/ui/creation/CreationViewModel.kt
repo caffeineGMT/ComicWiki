@@ -38,4 +38,18 @@ class CreationViewModel : ViewModel() {
     fun getComicNodesCount(): Int {
         return comicNodes.value?.size ?: 0
     }
+
+    fun moveComicNode(from: Int, to: Int) {
+        if( from == to) return
+        val local = comicNodes.value?.toMutableList()
+        local?.let {
+            val fromComicNode = it[from]
+            it.removeAt(from)
+            if (to < from) {
+                it.add(to, fromComicNode)
+            } else {
+                it.add(to - 1, fromComicNode)
+            }
+        }
+    }
 }
