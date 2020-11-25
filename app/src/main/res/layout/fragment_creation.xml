@@ -47,7 +47,8 @@
             android:id="@+id/centerNodeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="text"
+            android:text="this is a text for font"
+            android:fontFamily="@font/badabb"
             android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
