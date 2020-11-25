@@ -44,7 +44,7 @@ class CreationFragment : Fragment() {
     }
 
     private fun initView(root: View) {
-        val centerNode = root.findViewById<ImageButton>(R.id.centerNode)
+        val centerNode = root.findViewById<ImageButton>(R.id.centerNodeImage)
         val fromNode1 = root.findViewById<ImageButton>(R.id.fromNode1)
         val toNode1 = root.findViewById<ImageButton>(R.id.toNode1)
         val clear = root.findViewById<Button>(R.id.clear)
@@ -89,7 +89,7 @@ class CreationFragment : Fragment() {
                     val largeImageURL = getString(largeImageURLKey)
                     val apiDetailURL = getString(apiDetailURLKey)
 
-                    Glide.fetch(largeImageURL, largeImageURL, centerNode)
+                    Glide.fetch(largeImageURL, largeImageURL, centerNodeImage)
                     curNode.apply {
                         this.name = name
                         this.deck = deck
