@@ -24,14 +24,14 @@
         tools:layout="@layout/fragment_creation" />
 
     <fragment
-        android:id="@+id/navigation_connection"
-        android:name="edu.utcs.comicwiki.ui.connection.ConnectionFragment"
-        android:label="Connection"
-        tools:layout="@layout/fragment_connection" />
-
-    <fragment
         android:id="@+id/navigation_posts"
-        android:name="edu.utcs.comicwiki.ui.posts.PostsFragment"
+        android:name="edu.utcs.comicwiki.ui.connection.PostsFragment"
         android:label="Posts"
         tools:layout="@layout/fragment_posts" />
+
+    <fragment
+        android:id="@+id/navigation_colletion"
+        android:name="edu.utcs.comicwiki.ui.posts.CollectionFragment"
+        android:label="Collection"
+        tools:layout="@layout/fragment_collection" />
 </navigation>

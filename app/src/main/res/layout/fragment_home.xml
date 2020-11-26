@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Do You Know?"
-                android:fontFamily="@font/badabb"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/doYouKnowDeck" />
 
@@ -44,37 +43,35 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Most Popular Teams"
-                android:fontFamily="@font/badabb"
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_teams"
-                android:background="#8BC34A"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:background="#8BC34A" />
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/badabb"
                 android:text="Most Popular Characters"
                 android:textColor="#000000"
                 android:textSize="20dp"
@@ -83,8 +80,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_characters"
                 android:layout_width="match_parent"
-                android:background="#00BCD4"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:background="#00BCD4" />
         </LinearLayout>
 
 
