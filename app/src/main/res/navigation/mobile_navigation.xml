@@ -6,6 +6,11 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
+        android:id="@+id/navigation_loading"
+        android:name="edu.utcs.comicwiki.ui.loading.LoadingFragment"
+        tools:layout="@layout/fragment_loading" />
+
+    <fragment
         android:id="@+id/navigation_home"
         android:name="edu.utcs.comicwiki.ui.home.HomeFragment"
         android:label="Home"
@@ -25,13 +30,17 @@
 
     <fragment
         android:id="@+id/navigation_posts"
-        android:name="edu.utcs.comicwiki.ui.connection.PostsFragment"
+        android:name="edu.utcs.comicwiki.ui.posts.PostsFragment"
         android:label="Posts"
         tools:layout="@layout/fragment_posts" />
 
     <fragment
         android:id="@+id/navigation_colletion"
-        android:name="edu.utcs.comicwiki.ui.posts.CollectionFragment"
+        android:name="edu.utcs.comicwiki.ui.collection.CollectionFragment"
         android:label="Collection"
         tools:layout="@layout/fragment_collection" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_logIn"-->
+<!--        android:name="edu.utcs.comicwiki.ui.Authentication.AuthFragment"/>-->
 </navigation>
