@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/sid_nav_menu"
         app:headerLayout="@layout/nav_header_main" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

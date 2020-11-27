@@ -39,8 +39,4 @@
         android:name="edu.utcs.comicwiki.ui.collection.CollectionFragment"
         android:label="Collection"
         tools:layout="@layout/fragment_collection" />
-
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_logIn"-->
-<!--        android:name="edu.utcs.comicwiki.ui.Authentication.AuthFragment"/>-->
 </navigation>
