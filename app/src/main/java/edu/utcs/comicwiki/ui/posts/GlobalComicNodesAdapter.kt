@@ -13,11 +13,9 @@ import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
 
-class ConnectionAdapter(
-    private val viewModel: CreationViewModel, private val itemTouchHelper: ItemTouchHelper
-) :
-    RecyclerView.Adapter<ConnectionAdapter.VH>() {
-
+class GlobalComicNodesAdapter(
+    private val viewModel: CreationViewModel
+) : RecyclerView.Adapter<GlobalComicNodesAdapter.VH>() {
     @SuppressLint("ClickableViewAccessibility")
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var nodeImage = itemView.findViewById<ImageView>(R.id.nodeImage)
@@ -26,19 +24,12 @@ class ConnectionAdapter(
             itemView.setOnClickListener {
 
             }
-
-            itemView.setOnTouchListener { view, motionEvent ->
-                if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
-                    itemTouchHelper.startDrag(this)
-                }
-                true
-            }
         }
 
         fun bind(item: ComicNode?) {
             if (item != null) {
                 Glide.fetch(item.smallImageURL!!, item.smallImageURL!!, nodeImage)
-                nodeImage.tooltipText = viewModel.getComicNodesAt(adapterPosition)?.name
+                nodeImage.tooltipText = viewModel.getGlobalComicNodesAt(adapterPosition)?.name
             }
         }
     }
@@ -46,15 +37,15 @@ class ConnectionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val itemView = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.row_connection, parent, false)
+            .inflate(R.layout.row_post, parent, false)
         return VH(itemView)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(viewModel.getComicNodesAt(position))
+        holder.bind(viewModel.getGlobalComicNodesAt(position))
     }
 
     override fun getItemCount(): Int {
-        return viewModel.getComicNodesCount()
+        return viewModel.getGlobalComicNodesCount()
     }
 }

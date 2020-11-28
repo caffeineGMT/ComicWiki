@@ -9,8 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
+import edu.utcs.comicwiki.ui.posts.PostsFragment
 
 class CollectionFragment : Fragment() {
+
+    companion object {
+        fun newInstance(): CollectionFragment {
+            return CollectionFragment()
+        }
+    }
 
     private val postsViewModel: CreationViewModel by activityViewModels()
 
@@ -29,14 +36,8 @@ class CollectionFragment : Fragment() {
     }
 
     private fun initObservers() {
-
     }
 
     private fun initView(root: View) {
-        val test = root.findViewById<WebView>(R.id.loadingGIF)
-//        val url = "https://i2.wp.com/boingboing.net/wp-content/uploads/2015/10/pJReN4H1.gif?w=970"
-//        Glide.fetch(url, url, test)
-        val a = "https://i2.wp.com/boingboing.net/wp-content/uploads/2015/10/pJReN4H1.gif?w=970"
-        test.loadUrl(a)
     }
 }

@@ -14,8 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.MainActivity
 import edu.utcs.comicwiki.R
+import edu.utcs.comicwiki.ui.posts.PostsFragment
 
 class SearchFragment : Fragment() {
+    companion object {
+        fun newInstance(): SearchFragment {
+            return SearchFragment()
+        }
+    }
 
     private val searchViewModel: SearchViewModel by activityViewModels()
     private lateinit var searchAdapter: SearchAdapter
@@ -66,7 +72,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initView(root: View) {
-        val rv_search = root.findViewById<RecyclerView>(R.id.rv_myComicNodes)
+        val rv_search = root.findViewById<RecyclerView>(R.id.rv_globalComicNodes)
         searchAdapter = SearchAdapter(searchViewModel)
         rv_search.adapter = searchAdapter
         rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

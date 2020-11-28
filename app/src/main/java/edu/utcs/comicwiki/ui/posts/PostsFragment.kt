@@ -1,7 +1,6 @@
 package edu.utcs.comicwiki.ui.posts
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +15,15 @@ import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
 
 class PostsFragment : Fragment() {
+    companion object {
+        fun newInstance(): PostsFragment {
+            return PostsFragment()
+        }
+    }
 
-    private val creationViewModel: CreationViewModel by activityViewModels()
-    private lateinit var connectionAdapter: ConnectionAdapter
+    private val viewModel: CreationViewModel by activityViewModels()
+    private lateinit var globalComicNodesAdapter: GlobalComicNodesAdapter
+    private lateinit var userComicNodesAdapter: UserComicNodesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,33 +31,36 @@ class PostsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_posts, container, false)
-
         initView(root)
         initObservers()
-
         return root
     }
 
     override fun onResume() {
         super.onResume()
-        creationViewModel.getComicNodes()
     }
 
     private fun initObservers() {
-        creationViewModel.observeComicNodes().observe(viewLifecycleOwner, Observer {
-            Log.d(javaClass.simpleName,it.size.toString())
-            connectionAdapter.notifyDataSetChanged()
+        viewModel.observeGlobalComicNodes().observe(viewLifecycleOwner, Observer {
+            globalComicNodesAdapter.notifyDataSetChanged()
+        })
+        viewModel.observeUserComicNodes().observe(viewLifecycleOwner, Observer {
+            userComicNodesAdapter.notifyDataSetChanged()
         })
     }
 
     private fun initView(root: View) {
-        val itemTouchHelper = initTouchHelper()
-        connectionAdapter = ConnectionAdapter(creationViewModel, itemTouchHelper)
-        val rv_myComicNodes = root.findViewById<RecyclerView>(R.id.rv_myComicNodes)
+        globalComicNodesAdapter = GlobalComicNodesAdapter(viewModel)
+        val rv_globalComicNodes = root.findViewById<RecyclerView>(R.id.rv_globalComicNodes)
+        rv_globalComicNodes.adapter = globalComicNodesAdapter
+        rv_globalComicNodes.layoutManager = GridLayoutManager(context, 7)
 
-        rv_myComicNodes.adapter = connectionAdapter
-        rv_myComicNodes.layoutManager = GridLayoutManager(context, 7)
-        itemTouchHelper.attachToRecyclerView(rv_myComicNodes)
+        val itemTouchHelper = initTouchHelper()
+        userComicNodesAdapter = UserComicNodesAdapter(viewModel)
+        val rv_userComicNodes = root.findViewById<RecyclerView>(R.id.rv_userComicNodes)
+        rv_userComicNodes.adapter = userComicNodesAdapter
+        rv_userComicNodes.layoutManager = GridLayoutManager(context, 7)
+        itemTouchHelper.attachToRecyclerView(rv_userComicNodes)
     }
 
     private fun initTouchHelper(): ItemTouchHelper {
@@ -87,8 +95,8 @@ class PostsFragment : Fragment() {
                     val from = viewHolder.adapterPosition
                     val to = target.adapterPosition
 
-                    creationViewModel.moveComicNode(from, to)
-                    connectionAdapter.notifyItemMoved(from, to)
+                    viewModel.moveComicNode(from, to)
+                    userComicNodesAdapter.notifyItemMoved(from, to)
 
                     return true
                 }

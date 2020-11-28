@@ -7,9 +7,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -19,11 +21,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import edu.utcs.comicwiki.AuthInitActivity.Companion.RC_SIGNIN
+import edu.utcs.comicwiki.ui.collection.CollectionFragment
+import edu.utcs.comicwiki.ui.creation.CreationFragment
+import edu.utcs.comicwiki.ui.creation.CreationViewModel
+import edu.utcs.comicwiki.ui.home.HomeFragment
+import edu.utcs.comicwiki.ui.posts.PostsFragment
+import edu.utcs.comicwiki.ui.search.SearchFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val viewModel: CreationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         // setup Authentication
         initAuthListener()
+
+        // a workaround to prevent fragment being killed
+        HomeFragment.newInstance()
+        SearchFragment.newInstance()
+        CreationFragment.newInstance()
+        PostsFragment.newInstance()
+        CollectionFragment.newInstance()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -71,12 +87,10 @@ class MainActivity : AppCompatActivity() {
             logIn.setImageResource(R.mipmap.ic_launcher_round)
             profileImage.setImageResource(R.mipmap.ic_launcher_round)
 
-            data?.extras.let {
-                userName.text = "test"
-                userEmail.text = "aaa"
-//                it.getString(userNameKey)
-//                it.getString(userEmailKey)
-            }
+            userEmail.text = FirebaseAuth.getInstance().currentUser?.email
+            userName.text = userEmail.text.toString().substringBefore("@")
+
+            viewModel.getUserComicNodes()
         }
     }
 
@@ -91,14 +105,20 @@ class MainActivity : AppCompatActivity() {
 
         logOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
+            viewModel.getUserComicNodes()
 
             val text = "You have signed out."
             Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
 
+            // clear UI
             logIn.setImageResource(R.drawable.ic_baseline_account_circle_30)
             val header = findViewById<NavigationView>(R.id.side_nav_view).getHeaderView(0)
             val profileImage = header.findViewById<ImageView>(R.id.profileImage)
             profileImage.setImageResource(R.drawable.ic_baseline_account_circle_30)
+            val userName = header.findViewById<TextView>(R.id.userName)
+            val userEmail = header.findViewById<TextView>(R.id.userEmail)
+            userEmail.text = "userEmail"
+            userName.text = "userName"
         }
     }
 

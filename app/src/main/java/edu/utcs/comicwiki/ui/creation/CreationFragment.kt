@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.FirebaseAuth
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
@@ -18,14 +20,15 @@ import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.nameKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.smallImageURLKey
+import edu.utcs.comicwiki.ui.posts.PostsFragment
 import kotlinx.android.synthetic.main.fragment_creation.*
 
 class CreationFragment : Fragment() {
-
     companion object {
-        const val CENTER_RC = 0
-        const val FROM_RC = 1
-        const val TO_RC = 2
+        const val CENTER_RC = 1
+        fun newInstance(): CreationFragment {
+            return CreationFragment()
+        }
     }
 
     private val creationViewModel: CreationViewModel by activityViewModels()
@@ -45,32 +48,29 @@ class CreationFragment : Fragment() {
 
     private fun initView(root: View) {
         val centerNode = root.findViewById<ImageButton>(R.id.centerNodeImage)
-        val fromNode1 = root.findViewById<ImageButton>(R.id.fromNode1)
-        val toNode1 = root.findViewById<ImageButton>(R.id.toNode1)
         val clear = root.findViewById<Button>(R.id.clear)
         val save = root.findViewById<Button>(R.id.save)
 
         centerNode.setOnClickListener {
-            injectComicNode(this.requireContext(), CENTER_RC)
+            injectComicNode(requireContext(), CENTER_RC)
         }
-        fromNode1.setOnClickListener {
-            injectComicNode(this.requireContext(), FROM_RC)
-        }
-        toNode1.setOnClickListener {
-            injectComicNode(this.requireContext(), TO_RC)
-        }
-
         clear.setOnClickListener {
             centerNode.setImageBitmap(null)
-            fromNode1.setImageBitmap(null)
-            toNode1.setImageBitmap(null)
-
             curNode = ComicNode()
         }
         save.setOnClickListener {
-            creationViewModel.saveComicNode(curNode)
+            if (FirebaseAuth.getInstance().currentUser == null) {
+                val text = "You have to log in first before saving any content."
+                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+            }
+            else {
+                creationViewModel.saveComicNode(curNode)
+                creationViewModel.getUserComicNodes()
+                creationViewModel.getGlobalComicNodes()
+                val text = "Successfully saved."
+                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+            }
         }
-
     }
 
     private fun injectComicNode(context: Context, requestCode: Int) {
@@ -98,28 +98,6 @@ class CreationFragment : Fragment() {
                         this.apiDetailURL = apiDetailURL
                     }
                 }
-            }
-            FROM_RC -> data?.extras?.apply {
-                val name = getString(nameKey)
-                val deck = getString(deckKey)
-                val smallImageURL = getString(smallImageURLKey)
-                val largeImageURL = getString(largeImageURLKey)
-                val apiDetailURL = getString(apiDetailURLKey)
-
-                Glide.fetch(smallImageURL, smallImageURL, fromNode1)
-                curNode.fromNode =
-                    ComicNode()
-            }
-            TO_RC -> data?.extras?.apply {
-                val name = getString(nameKey)
-                val deck = getString(deckKey)
-                val smallImageURL = getString(smallImageURLKey)
-                val largeImageURL = getString(largeImageURLKey)
-                val apiDetailURL = getString(apiDetailURLKey)
-
-                Glide.fetch(smallImageURL, smallImageURL, toNode1)
-                curNode.toNode =
-                    ComicNode()
             }
         }
     }

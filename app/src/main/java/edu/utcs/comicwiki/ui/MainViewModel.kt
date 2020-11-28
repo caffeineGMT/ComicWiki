@@ -194,43 +194,4 @@ class MainViewModel : ViewModel() {
         return teamEnemies
     }
     // endregion
-
-    // region: other
-    private fun safePiscumURL(): String {
-        val builder = Uri.Builder()
-        builder.scheme("https")
-            .authority("picsum.photos")
-            .appendPath(width.toString())
-            .appendPath(height.toString())
-        val url = builder.build().toString()
-        Log.d(javaClass.simpleName, "Built: $url")
-        return url
-    }
-
-    // Generates greater variety of images and we can control the randomness
-    // But some numbers return error images, so have a backup.
-    private fun randomHeroURL(): String {
-        val builder = Uri.Builder()
-        builder.scheme("https")
-            .authority("picsum.photos")
-            .appendPath(width.toString())
-            .appendPath(height.toString())
-            .appendQueryParameter(
-                "image",
-                random.nextInt(1000).toString()
-            )
-//        val url =
-//            "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/577-scarlet-spider.jpg"
-        val url = characterList.value?.get(0)?.image?.screenURL
-        Log.d(javaClass.simpleName, "Built: $url")
-        println(characterList.value?.get(1)?.name.toString())
-        return url.toString()
-    }
-
-    fun netFetchImage(imageView: ImageView) {
-        Glide.fetch(randomHeroURL(), safePiscumURL(), imageView)
-    }
-
-    // endregion
-
 }

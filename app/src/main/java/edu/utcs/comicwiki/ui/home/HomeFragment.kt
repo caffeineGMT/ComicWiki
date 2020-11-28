@@ -12,8 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
+import edu.utcs.comicwiki.ui.search.SearchFragment
 
 class HomeFragment : Fragment() {
+    companion object {
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
+        }
+    }
 
     private lateinit var teamListAdapter: TeamListAdapter
     private lateinit var characterAdapter: CharacterListAdapter

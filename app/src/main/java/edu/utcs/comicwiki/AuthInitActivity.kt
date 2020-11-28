@@ -26,6 +26,7 @@ class AuthInitActivity : AppCompatActivity() {
                 AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
+                    .setIsSmartLockEnabled(false)
                     .setTheme(R.style.AppTheme)
                     .build(),
                 RC_SIGNIN
@@ -38,45 +39,13 @@ class AuthInitActivity : AppCompatActivity() {
         }
     }
 
-    private fun setDisplayNameByEmail(): Boolean {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
-            Log.d("AuthInitActivity", "XXX, setDisplayNameByEmail current user null")
-        } else if (user.displayName == null || user.displayName!!.isEmpty()) {
-            user.apply {
-                val displayName = this.email?.substringBefore("@")
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(displayName)
-                    .build()
-                if (displayName != null && displayName.isEmpty()) {
-                    this.updateProfile(profileUpdates)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Log.d(javaClass.simpleName, "User profile updated.")
-                            }
-                            // Now we are done
-                            finish()
-                        }
-                    return false
-                } else {
-                    Log.d("AuthInitActivity", "XXX displayName $displayName")
-                }
-            }
-        } else {
-            Log.d(javaClass.simpleName, "displayName set to ${user.displayName}")
-        }
-        return true
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGNIN) {
             if (resultCode == Activity.RESULT_OK) {
                 val text = "You have signed in."
                 Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
-                if (setDisplayNameByEmail()) {
-                    finish()
-                }
+                finish()
             } else {
                 finish()
             }

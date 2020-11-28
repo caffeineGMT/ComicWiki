@@ -1,23 +1,51 @@
 package edu.utcs.comicwiki.ui.creation
 
-import android.util.Log
+import android.app.Activity
+import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.utcs.comicwiki.model.ComicNode
 
-class CreationViewModel : ViewModel() {
+class CreationViewModel() : ViewModel() {
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private val comicNodes = MutableLiveData<List<ComicNode>>()
-
-    fun observeComicNodes(): LiveData<List<ComicNode>> {
-        return comicNodes
+    private val globalComicNodes = MutableLiveData<List<ComicNode>>()
+    private val userComicNode = MutableLiveData<List<ComicNode>>().apply {
+        value = mutableListOf()
     }
 
-    fun getComicNodesAt(position: Int): ComicNode? {
-        val local = comicNodes.value?.toList()
+    init {
+        getGlobalComicNodes()
+        getUserComicNodes()
+    }
+
+    // region: global comic nodes
+    fun getGlobalComicNodes() {
+        db.collection("globalComicNodes")
+            .orderBy("timeStamp")
+            .limit(50)
+            .addSnapshotListener { querySnapshot, ex ->
+                if (ex != null) {
+                    return@addSnapshotListener
+                }
+                globalComicNodes.value = querySnapshot?.documents?.mapNotNull {
+                    it.toObject(ComicNode::class.java)
+                }
+            }
+    }
+
+    fun observeGlobalComicNodes(): LiveData<List<ComicNode>> {
+        return globalComicNodes
+    }
+
+    fun getGlobalComicNodesAt(position: Int): ComicNode? {
+        val local = globalComicNodes.value?.toList()
         local?.let {
             if (position >= it.size)
                 return null
@@ -26,12 +54,57 @@ class CreationViewModel : ViewModel() {
         return null
     }
 
-    fun getComicNodesCount(): Int {
-        return comicNodes.value?.size ?: 0
+    fun getGlobalComicNodesCount(): Int {
+        return globalComicNodes.value?.size ?: 0
+    }
+    // endregion
+
+    // region: user comic nodes
+    fun getUserComicNodes() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            userComicNode.value = mutableListOf()
+            return
+        }
+        db.collection("globalComicNodes")
+            .whereEqualTo("ownerUID", FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("timeStamp")
+            .limit(50)
+            .addSnapshotListener { querySnapshot, ex ->
+                if (ex != null) {
+                    return@addSnapshotListener
+                }
+                userComicNode.value = querySnapshot?.documents?.mapNotNull {
+                    it.toObject(ComicNode::class.java)
+                }
+            }
     }
 
+    fun observeUserComicNodes(): LiveData<List<ComicNode>> {
+        return userComicNode
+    }
+
+    fun getUserComicNodesAt(position: Int): ComicNode? {
+        val local = userComicNode.value?.toList()
+        local?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getUserComicNodesCount(): Int {
+        return userComicNode.value?.size ?: 0
+    }
+    // endregion
+
+    // region: data change
     fun saveComicNode(comicNode: ComicNode) {
+        // inject ids
         comicNode.selfID = db.collection("globalComicNodes").document().id
+        comicNode.ownerUID = FirebaseAuth.getInstance().currentUser!!.uid
+
+        // create document
         db.collection("globalComicNodes")
             .document(comicNode.selfID)
             .set(comicNode)
@@ -51,29 +124,20 @@ class CreationViewModel : ViewModel() {
             }
     }
 
-    fun getComicNodes() {
-//        if (FirebaseAuth.getInstance().currentUser == null) {
-//            Log.d(javaClass.simpleName, "Can't get chat, no one is logged in")
-//            comicNodes.value = listOf()
-//            return
-//        }
-        db.collection("globalComicNodes")
-            .orderBy("timeStamp")
-            .limit(100)
-            .addSnapshotListener { querySnapshot, ex ->
-                if (ex != null) {
-                    return@addSnapshotListener
-                }
-                comicNodes.value = querySnapshot?.documents?.mapNotNull {
-                    it.toObject(ComicNode::class.java)
-                }
-            }
-    }
-
     fun moveComicNode(from: Int, to: Int) {
         if (from == to) return
-        val local = comicNodes.value?.toMutableList()
+        val local = userComicNode.value?.toMutableList()
         local?.let {
+            // swap order info
+            deleteComicNode(it[from])
+            deleteComicNode(it[to])
+            val temp = it[from].timeStamp
+            it[from].timeStamp = it[to].timeStamp
+            it[to].timeStamp = temp
+            saveComicNode(it[from])
+            saveComicNode(it[to])
+
+            // swap location in list
             val fromComicNode = it[from]
             it.removeAt(from)
             if (to < from) {
@@ -83,4 +147,5 @@ class CreationViewModel : ViewModel() {
             }
         }
     }
+    // endregion
 }
