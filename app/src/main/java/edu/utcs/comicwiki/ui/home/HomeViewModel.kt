@@ -6,52 +6,58 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.utcs.comicwiki.api.ComicVineAPI
 import edu.utcs.comicwiki.api.ComicVineRepo
-import edu.utcs.comicwiki.model.Character
-import edu.utcs.comicwiki.model.Power
-import edu.utcs.comicwiki.model.Team
+import edu.utcs.comicwiki.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    // region: helper function
     companion object {
         fun URL2Path(str: String): String {
             return str.substringAfter("api/").substringBeforeLast("/")
         }
     }
-    // endregion
 
     private val comicVineAPI = ComicVineAPI.create()
     private val comicVineRepo = ComicVineRepo(comicVineAPI)
-    private val characterList = MutableLiveData<List<Character>>()
-    private val teamList = MutableLiveData<List<Team>>()
+
+    private val characters = MutableLiveData<List<Character>>()
+    private val teams = MutableLiveData<List<Team>>()
+    private val powers = MutableLiveData<List<Power>>()
+    private val locations = MutableLiveData<List<Location>>()
+    private val concepts = MutableLiveData<List<Concept>>()
+    private val objects = MutableLiveData<List<Object>>()
+
+
     private val team_apiPath = MutableLiveData<String>()
     private val team = MutableLiveData<Team>()
     private val teamMembers = MutableLiveData<List<Character>>()
     private val teamFriends = MutableLiveData<List<Character>>()
     private val teamEnemies = MutableLiveData<List<Character>>()
-    private val powers = MutableLiveData<List<Power>>()
+
 
     init {
-        netFetchTeamList()
-        netFetchCharacterList()
+        netFetchCharacters()
+        netFetchTeams()
+        netFetchPowers()
+        netFetchLocations()
+        netFetchConcepts()
+        netFetchObjects()
     }
 
-
     // region: characterList
-    fun netFetchCharacterList() = viewModelScope.launch(
+    fun netFetchCharacters() = viewModelScope.launch(
         context = viewModelScope.coroutineContext
                 + Dispatchers.IO
     ) {
-        characterList.postValue(comicVineRepo.fetchCharacterList())
+        characters.postValue(comicVineRepo.fetchCharacters())
     }
 
     fun observeCharacterList(): LiveData<List<Character>> {
-        return characterList
+        return characters
     }
 
     fun getCharacterListAt(position: Int): Character? {
-        val localList = characterList.value?.toList()
+        val localList = characters.value?.toList()
         localList?.let {
             if (position >= it.size)
                 return null
@@ -61,24 +67,24 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getCharacterListCount(): Int {
-        return characterList.value?.size ?: 0
+        return characters.value?.size ?: 0
     }
     // endregion
 
     // region: teamList
-    fun netFetchTeamList() = viewModelScope.launch(
+    fun netFetchTeams() = viewModelScope.launch(
         context = viewModelScope.coroutineContext
                 + Dispatchers.IO
     ) {
-        teamList.postValue(comicVineRepo.fetchTeamList())
+        teams.postValue(comicVineRepo.fetchTeams())
     }
 
     fun observeTeamList(): LiveData<List<Team>> {
-        return teamList
+        return teams
     }
 
     fun getTeamListAt(position: Int): Team? {
-        val localList = teamList.value?.toList()
+        val localList = teams.value?.toList()
         localList?.let {
             if (position >= it.size)
                 return null
@@ -88,8 +94,119 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getTeamListCount(): Int {
-        return teamList.value?.size ?: 0
+        return teams.value?.size ?: 0
     }
+    // endregion
+
+    // region: powers
+    fun netFetchPowers() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        powers.postValue(comicVineRepo.fetchPowers())
+    }
+
+    fun observePowers(): LiveData<List<Power>> {
+        return powers
+    }
+
+    fun getPowersAt(position: Int): Power? {
+        val localList = powers.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getPowersCount(): Int {
+        return powers.value?.size ?: 0
+    }
+    // endregion
+
+    // region: locations
+    fun netFetchLocations() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        locations.postValue(comicVineRepo.fetchLocations())
+    }
+
+    fun observeLocations(): LiveData<List<Location>> {
+        return locations
+    }
+
+    fun getLocationsAt(position: Int): Location? {
+        val localList = locations.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getLocationsCount(): Int {
+        return locations.value?.size ?: 0
+    }
+    // endregion
+
+    // region: concepts
+    fun netFetchConcepts() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        concepts.postValue(comicVineRepo.fetchConcepts())
+    }
+
+    fun observeConcepts(): LiveData<List<Concept>> {
+        return concepts
+    }
+
+    fun getConceptsAt(position: Int): Concept? {
+        val localList = concepts.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getConceptsCount(): Int {
+        return concepts.value?.size ?: 0
+    }
+
+    // endregion
+
+    // region: objects
+
+    fun netFetchObjects() = viewModelScope.launch(
+        context = viewModelScope.coroutineContext
+                + Dispatchers.IO
+    ) {
+        objects.postValue(comicVineRepo.fetchObjects())
+    }
+
+    fun observeObjects(): LiveData<List<Object>> {
+        return objects
+    }
+
+    fun getObjectsAt(position: Int): Object? {
+        val localList = objects.value?.toList()
+        localList?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getObjectsCount(): Int {
+        return objects.value?.size ?: 0
+    }
+
     // endregion
 
     // region: single team

@@ -1,15 +1,10 @@
 package edu.utcs.comicwiki.api
 
-import edu.utcs.comicwiki.model.Character
-import edu.utcs.comicwiki.model.Power
-import edu.utcs.comicwiki.model.Team
+import edu.utcs.comicwiki.model.*
 
 class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
-    suspend fun fetCharacterFromPath(characterPath: String?): Character {
-        return comicVineAPI.fetchCharacterFromPath(characterPath).results
-    }
-
-    suspend fun fetchCharacterList(): List<Character> {
+    // simple fetch
+    suspend fun fetchCharacters(): List<Character> {
         return comicVineAPI.fetchCharacters().results
     }
 
@@ -17,16 +12,38 @@ class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
         return comicVineAPI.fetchPowers().results
     }
 
-    suspend fun fetchTeamList(): List<Team> {
+    suspend fun fetchTeams(): List<Team> {
         return comicVineAPI.fetchTeams().results
+    }
+
+    suspend fun fetchLocations(): List<Location> {
+        return comicVineAPI.fetchLocations().results
+    }
+
+    suspend fun fetchConcepts(): List<Concept> {
+        return comicVineAPI.fetchConcepts().results
+    }
+
+    suspend fun fetchObjects(): List<Object> {
+        return comicVineAPI.fetchObjects().results
+    }
+
+
+
+
+    suspend fun fetch(): List<Character> {
+        return comicVineAPI.fetchCharacters().results
     }
 
     suspend fun fetchTeam(team_apiPath: String?): Team {
         return comicVineAPI.fetchTeam(team_apiPath).results
     }
 
+
+    suspend fun fetCharacterFromPath(characterPath: String?): Character {
+        return comicVineAPI.fetchCharacterFromPath(characterPath).results
+    }
     suspend fun searchCharacters(keyWord: String): List<Character>? {
-        println(keyWord)
         return comicVineAPI.searchCharacter(keyWord).results
     }
 

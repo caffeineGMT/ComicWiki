@@ -25,8 +25,8 @@ class AuthInitActivity : AppCompatActivity() {
             startActivityForResult(
                 AuthUI.getInstance()
                     .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
                     .setIsSmartLockEnabled(false)
+                    .setAvailableProviders(providers)
                     .setTheme(R.style.AppTheme)
                     .build(),
                 RC_SIGNIN

@@ -90,6 +90,8 @@ class CreationFragment : Fragment() {
                     val apiDetailURL = getString(apiDetailURLKey)
 
                     Glide.fetch(largeImageURL, largeImageURL, centerNodeImage)
+                    centerNodeName.text = name
+                    centerNodeDeck.text = deck
                     curNode.apply {
                         this.name = name
                         this.deck = deck

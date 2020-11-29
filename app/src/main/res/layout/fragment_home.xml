@@ -9,8 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.home.HomeFragment">
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -20,14 +19,14 @@
                 android:id="@+id/doYouKnowImage"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="#FF9800"
+                android:background="@color/lightBlue"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Do You Know?"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/doYouKnowDeck" />
 
             <TextView
@@ -35,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Captain America is a weird dude"
-                android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="@+id/doYouKnowImage" />
 
 
@@ -50,18 +48,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Most Popular Teams"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:text="Featured Teams"
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_teams"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="#8BC34A" />
+                android:layout_height="wrap_content"
+                android:minHeight="100dp" />
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,32 +68,77 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Most Popular Characters"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_characters"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="#00BCD4" />
+                android:layout_height="wrap_content"
+                android:minHeight="100dp" />
         </LinearLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_powers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <!--        <androidx.recyclerview.widget.RecyclerView-->
+        <!--            android:id="@+id/rv_powers"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_locations"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_concepts"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Least Known Locations"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_locations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Weird Concepts"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_concepts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trending Objects"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_objects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp" />
+        </LinearLayout>
 
     </LinearLayout>
 

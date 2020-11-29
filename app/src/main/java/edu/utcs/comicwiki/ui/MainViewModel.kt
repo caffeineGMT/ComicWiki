@@ -1,8 +1,5 @@
 package edu.utcs.comicwiki.ui
 
-import android.net.Uri
-import android.util.Log
-import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import edu.utcs.comicwiki.api.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.Character
 import edu.utcs.comicwiki.model.Power
 import edu.utcs.comicwiki.model.Team
@@ -46,7 +42,7 @@ class MainViewModel : ViewModel() {
         context = viewModelScope.coroutineContext
                 + Dispatchers.IO
     ) {
-        characterList.postValue(comicVineRepo.fetchCharacterList())
+        characterList.postValue(comicVineRepo.fetchCharacters())
     }
 
     fun observeCharacterList(): LiveData<List<Character>> {
@@ -72,7 +68,7 @@ class MainViewModel : ViewModel() {
         context = viewModelScope.coroutineContext
                 + Dispatchers.IO
     ) {
-        teamList.postValue(comicVineRepo.fetchTeamList())
+        teamList.postValue(comicVineRepo.fetchTeams())
     }
 
     fun observeTeamList(): LiveData<List<Team>> {
