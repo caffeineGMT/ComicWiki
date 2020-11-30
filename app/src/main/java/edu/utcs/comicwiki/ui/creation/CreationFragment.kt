@@ -2,15 +2,17 @@ package edu.utcs.comicwiki.ui.creation
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
@@ -20,18 +22,19 @@ import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.nameKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.smallImageURLKey
-import edu.utcs.comicwiki.ui.posts.PostsFragment
 import kotlinx.android.synthetic.main.fragment_creation.*
 
 class CreationFragment : Fragment() {
     companion object {
-        const val CENTER_RC = 1
+        const val CENTER_NODE_RC = 1
+        const val ADD_NODE_RC = 2
         fun newInstance(): CreationFragment {
             return CreationFragment()
         }
     }
 
-    private val creationViewModel: CreationViewModel by activityViewModels()
+    private val viewModel: CreationViewModel by activityViewModels()
+    private lateinit var relatedNodesAdapter: RelatedNodesAdapter
     private var curNode = ComicNode()
 
     override fun onCreateView(
@@ -43,30 +46,47 @@ class CreationFragment : Fragment() {
 
         initView(root)
 
+        viewModel.observeRelatedComicNodes().observe(viewLifecycleOwner, Observer {
+            relatedNodesAdapter.notifyDataSetChanged()
+        })
+
         return root
     }
 
     private fun initView(root: View) {
-        val centerNode = root.findViewById<ImageButton>(R.id.centerNodeImage)
+        val relatedNodes_rv = root.findViewById<RecyclerView>(R.id.rv_relatedNodes)
+        relatedNodesAdapter = RelatedNodesAdapter(viewModel)
+        relatedNodes_rv.adapter = relatedNodesAdapter
+        relatedNodes_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        val addNode = root.findViewById<ImageButton>(R.id.addNode)
+        val centerNode = root.findViewById<ImageView>(R.id.centerNodeImage)
         val clear = root.findViewById<Button>(R.id.clear)
         val save = root.findViewById<Button>(R.id.save)
+        val customizedContent = root.findViewById<EditText>(R.id.customizedContent)
 
+        addNode.setOnClickListener {
+            injectComicNode(requireContext(), ADD_NODE_RC)
+        }
         centerNode.setOnClickListener {
-            injectComicNode(requireContext(), CENTER_RC)
+            injectComicNode(requireContext(), CENTER_NODE_RC)
         }
         clear.setOnClickListener {
             centerNode.setImageBitmap(null)
             curNode = ComicNode()
+
+            viewModel.deleteAllRelatedNodes()
         }
         save.setOnClickListener {
             if (FirebaseAuth.getInstance().currentUser == null) {
                 val text = "You have to log in first before saving any content."
                 Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-            }
-            else {
-                creationViewModel.saveComicNode(curNode)
-                creationViewModel.getUserComicNodes()
-                creationViewModel.getGlobalComicNodes()
+            } else {
+                curNode.userDescription = customizedContent.text.toString()
+//                curNode.relatedNodes = viewModel.getAllRelatedNodes()
+                viewModel.saveComicNode(curNode)
+                viewModel.getUserComicNodes()
+                viewModel.getGlobalComicNodes()
                 val text = "Successfully saved."
                 Toast.makeText(context, text, Toast.LENGTH_LONG).show()
             }
@@ -81,7 +101,8 @@ class CreationFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            CENTER_RC -> {
+            CENTER_NODE_RC -> {
+                centerNodeImage.setBackgroundColor(Color.WHITE)
                 data?.extras?.apply {
                     val name = getString(nameKey)
                     val deck = getString(deckKey)
@@ -99,6 +120,25 @@ class CreationFragment : Fragment() {
                         this.largeImageURL = largeImageURL
                         this.apiDetailURL = apiDetailURL
                     }
+                }
+            }
+            ADD_NODE_RC -> {
+                data?.extras?.apply {
+                    val name = getString(nameKey)
+                    val deck = getString(deckKey)
+                    val smallImageURL = getString(smallImageURLKey)
+                    val largeImageURL = getString(largeImageURLKey)
+                    val apiDetailURL = getString(apiDetailURLKey)
+
+                    val tempNode = ComicNode()
+                    tempNode.apply {
+                        this.name = name
+                        this.deck = deck
+                        this.smallImageURL = smallImageURL
+                        this.largeImageURL = largeImageURL
+                        this.apiDetailURL = apiDetailURL
+                    }
+                    viewModel.setRelatedNodes(tempNode)
                 }
             }
         }

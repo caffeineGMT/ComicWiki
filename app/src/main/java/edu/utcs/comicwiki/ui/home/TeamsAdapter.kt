@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.model.Team
@@ -20,11 +23,14 @@ class TeamsAdapter(private val viewModel: HomeViewModel) :
 
         init {
             itemView.setOnClickListener {
-                val url = viewModel.getTeamListAt(adapterPosition)?.apiDetailURL
-                if (url != null) {
-                    viewModel.set_team_apiPath(url)
-                }
-                viewModel.netFetchTeam()
+                val item = viewModel.getTeamListAt(adapterPosition)
+                val name = item?.name ?:""
+                val siteURL = item?.siteDetailURL
+                val description = item?.description
+                val imageURL = item?.image?.originalURL
+
+                val action = HomeFragmentDirections.actionNavigationHomeToGenericItemFragment(imageURL,description,name)
+                it.findNavController().navigate(action)
             }
         }
 

@@ -15,16 +15,37 @@
         android:imeOptions="actionSearch"
         android:inputType="text" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_globalComicNodes"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:text="Character" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_characters"
         android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Location" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_locations"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Story" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_storyArcs"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_weight="1" />
 
 </LinearLayout>

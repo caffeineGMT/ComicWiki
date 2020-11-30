@@ -43,12 +43,19 @@ class ComicVineRepo(private val comicVineAPI: ComicVineAPI) {
     suspend fun fetCharacterFromPath(characterPath: String?): Character {
         return comicVineAPI.fetchCharacterFromPath(characterPath).results
     }
+    
     suspend fun searchCharacters(keyWord: String): List<Character>? {
         return comicVineAPI.searchCharacter(keyWord).results
     }
+
+
 
     suspend fun fetchTeamMembers(characterList: List<String>?): List<Character>? {
         return comicVineAPI.searchCharacters("spider-man").results
     }
 
+
+    suspend fun search(query: String, resources: String): List<GenericItem> {
+        return comicVineAPI.search(query, resources).results
+    }
 }

@@ -55,7 +55,7 @@ class ComicNodeSearchActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        searchViewModel.observeSearchResult().observe(this, Observer {
+        searchViewModel.observeSearchCharacterResult().observe(this, Observer {
             searchAdapter.notifyDataSetChanged()
         })
     }

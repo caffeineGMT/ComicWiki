@@ -15,6 +15,10 @@ import edu.utcs.comicwiki.model.ComicNode
 class CreationViewModel() : ViewModel() {
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    private val relatedNodes = MutableLiveData<List<ComicNode>>().apply {
+        value = mutableListOf()
+    }
+
     private val globalComicNodes = MutableLiveData<List<ComicNode>>()
     private val userComicNode = MutableLiveData<List<ComicNode>>().apply {
         value = mutableListOf()
@@ -23,6 +27,48 @@ class CreationViewModel() : ViewModel() {
     init {
         getGlobalComicNodes()
         getUserComicNodes()
+    }
+
+    fun observeRelatedComicNodes(): LiveData<List<ComicNode>> {
+        return relatedNodes
+    }
+
+    fun setRelatedNodes(comicNode: ComicNode) {
+        val local = relatedNodes.value?.toMutableList()
+        local?.let {
+            it.add(comicNode)
+            relatedNodes.value = it
+        }
+    }
+
+    fun getRelatedNodesAt(position: Int): ComicNode? {
+        val local = relatedNodes.value?.toList()
+        local?.let {
+            if (position >= it.size)
+                return null
+            return it[position]
+        }
+        return null
+    }
+
+    fun getRelatedNodesCount(): Int {
+        return relatedNodes.value?.size ?: 0
+    }
+
+    fun deleteRelatedNodesAt(position: Int) {
+        val local = relatedNodes.value?.toMutableList()
+        local?.let {
+            it.removeAt(position)
+            relatedNodes.value = it
+        }
+    }
+
+    fun deleteAllRelatedNodes() {
+        relatedNodes.value = mutableListOf<ComicNode>()
+    }
+
+    fun getAllRelatedNodes(): MutableList<ComicNode>? {
+        return relatedNodes.value?.toMutableList()
     }
 
     // region: global comic nodes

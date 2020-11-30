@@ -25,13 +25,13 @@ class ComicNodeSearchAdapter(
     RecyclerView.Adapter<ComicNodeSearchAdapter.VH>() {
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var searchImage = itemView.findViewById<ImageView>(R.id.nodeImage)
+        private var searchImage = itemView.findViewById<ImageView>(R.id.iconImage)
         private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {
             itemView.setOnClickListener {
                 val returnIntent = Intent().apply {
-                    val result = comicNodeSearchViewModel.getSearchResultsAt(adapterPosition)
+                    val result = comicNodeSearchViewModel.getSearchCharacterResultsAt(adapterPosition)
                     this.putExtra(nameKey, result?.name)
                     this.putExtra(deckKey, result?.deck)
                     this.putExtra(smallImageURLKey, result?.image?.iconURL)
@@ -57,10 +57,10 @@ class ComicNodeSearchAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(comicNodeSearchViewModel.getSearchResultsAt(position))
+        holder.bind(comicNodeSearchViewModel.getSearchCharacterResultsAt(position))
     }
 
     override fun getItemCount(): Int {
-        return comicNodeSearchViewModel.getSearchResultsCount()
+        return comicNodeSearchViewModel.getSearchCharacterResultsCount()
     }
 }

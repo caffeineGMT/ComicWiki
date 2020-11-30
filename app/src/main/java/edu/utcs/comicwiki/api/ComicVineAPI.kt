@@ -14,6 +14,9 @@ interface ComicVineAPI {
         set(value) = TODO()
 
     @GET("characters/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=20")
+    suspend fun fetchGenericItem(): GenericItemsResponse
+
+    @GET("characters/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=20")
     suspend fun fetchCharacters(): CharactersResponse
 
     @GET("powers/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json")
@@ -43,7 +46,13 @@ interface ComicVineAPI {
     @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&resources=character")
     suspend fun searchCharacters(@Query("query") keyWords: String): CharactersResponse
 
+    @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=5")
+    suspend fun search(
+        @Query("query") query: String,
+        @Query("resources") resources: String
+    ): GenericItemsResponse
 
+    class GenericItemsResponse(val results: List<GenericItem>)
     class CharacterResponse(val results: Character)
     class CharactersResponse(val results: List<Character>)
     class PowersResponse(val results: List<Power>)

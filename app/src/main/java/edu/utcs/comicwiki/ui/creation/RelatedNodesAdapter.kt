@@ -1,4 +1,4 @@
-package edu.utcs.comicwiki.ui.posts
+package edu.utcs.comicwiki.ui.creation
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -13,20 +13,23 @@ import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
 
-class GlobalComicNodesAdapter(
+class RelatedNodesAdapter(
     private val viewModel: CreationViewModel
-) : RecyclerView.Adapter<GlobalComicNodesAdapter.VH>() {
+) : RecyclerView.Adapter<RelatedNodesAdapter.VH>() {
     @SuppressLint("ClickableViewAccessibility")
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var nodeImage = itemView.findViewById<ImageView>(R.id.nodeImage)
 
         init {
+            itemView.setOnLongClickListener {
+                viewModel.deleteRelatedNodesAt(adapterPosition)
+                true
+            }
         }
 
         fun bind(item: ComicNode?) {
             if (item != null) {
                 Glide.fetch(item.smallImageURL!!, item.smallImageURL!!, nodeImage)
-                nodeImage.tooltipText = viewModel.getGlobalComicNodesAt(adapterPosition)?.name
             }
         }
     }
@@ -39,10 +42,10 @@ class GlobalComicNodesAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(viewModel.getGlobalComicNodesAt(position))
+        holder.bind(viewModel.getRelatedNodesAt(position))
     }
 
     override fun getItemCount(): Int {
-        return viewModel.getGlobalComicNodesCount()
+        return viewModel.getRelatedNodesCount()
     }
 }
