@@ -2,7 +2,6 @@ package edu.utcs.comicwiki
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,7 +10,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -27,6 +25,7 @@ import edu.utcs.comicwiki.ui.creation.CreationViewModel
 import edu.utcs.comicwiki.ui.home.HomeFragment
 import edu.utcs.comicwiki.ui.posts.PostsFragment
 import edu.utcs.comicwiki.ui.search.SearchFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_search,
                 R.id.navigation_creation,
                 R.id.navigation_posts,
-                R.id.navigation_colletion
+//                R.id.navigation_collection
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

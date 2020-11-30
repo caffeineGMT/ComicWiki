@@ -27,9 +27,9 @@
 
     <fragment
         android:id="@+id/navigation_creation"
-        android:name="edu.utcs.comicwiki.ui.creation.CreationFragment"
+        android:name="edu.utcs.comicwiki.ui.creation.CreationFragmentII"
         android:label="Creation"
-        tools:layout="@layout/fragment_creation" />
+        tools:layout="@layout/fragment_test" />
 
     <fragment
         android:id="@+id/navigation_posts"
@@ -37,11 +37,11 @@
         android:label="Posts"
         tools:layout="@layout/fragment_posts" />
 
-    <fragment
-        android:id="@+id/navigation_colletion"
-        android:name="edu.utcs.comicwiki.ui.collection.CollectionFragment"
-        android:label="Collection"
-        tools:layout="@layout/fragment_collection" />
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_collection"-->
+<!--        android:name="edu.utcs.comicwiki.ui.collection.CollectionFragment"-->
+<!--        android:label="Collection"-->
+<!--        tools:layout="@layout/fragment_collection" />-->
     <fragment
         android:id="@+id/genericItemFragment"
         android:name="edu.utcs.comicwiki.ui.home.GenericItemFragment"

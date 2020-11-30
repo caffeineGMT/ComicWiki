@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.kapil.circularlayoutmanager.CircularLayoutManager
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
@@ -54,10 +55,12 @@ class CreationFragment : Fragment() {
     }
 
     private fun initView(root: View) {
+
         val relatedNodes_rv = root.findViewById<RecyclerView>(R.id.rv_relatedNodes)
         relatedNodesAdapter = RelatedNodesAdapter(viewModel)
         relatedNodes_rv.adapter = relatedNodesAdapter
-        relatedNodes_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        relatedNodes_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        relatedNodes_rv.layoutManager = CircularLayoutManager(10f,10f)
 
         val addNode = root.findViewById<ImageButton>(R.id.addNode)
         val centerNode = root.findViewById<ImageView>(R.id.centerNodeImage)

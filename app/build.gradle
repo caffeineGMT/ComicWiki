@@ -77,4 +77,7 @@ dependencies {
     // Spring Animation
     def dynamicanimation_version = '1.0.0'
     implementation "androidx.dynamicanimation:dynamicanimation:$dynamicanimation_version"
+
+    // circular layout manager
+    implementation 'com.github.kapil93:circular-layout-manager:2.0.0'
 }

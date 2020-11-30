@@ -21,9 +21,9 @@
         android:icon="@drawable/ic_baseline_blur_on_24"
         android:title="Connection" />
 
-    <item
-        android:id="@+id/navigation_colletion"
-        android:icon="@drawable/ic_round_dashboard_24"
-        android:title="Posts" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_collection"-->
+<!--        android:icon="@drawable/ic_round_dashboard_24"-->
+<!--        android:title="Posts" />-->
 
 </menu>
