@@ -1,37 +1,17 @@
 package edu.utcs.comicwiki.ui.creation
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.accessibility.AccessibilityManager
 import android.widget.*
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.kapil.circularlayoutmanager.*
+import com.kapil.circularlayoutmanager.CircularLayoutManager
 import edu.utcs.comicwiki.R
-import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
-import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.apiDetailURLKey
-import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
-import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
-import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.nameKey
-import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.smallImageURLKey
-import kotlinx.android.synthetic.main.fragment_creation.*
 import kotlinx.android.synthetic.main.fragment_test.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class CreationFragmentII : Fragment() {
+class CreationFragmentII : Fragment(R.layout.fragment_test) {
     companion object {
         const val CENTER_NODE_RC = 1
         const val ADD_NODE_RC = 2
@@ -41,40 +21,15 @@ class CreationFragmentII : Fragment() {
     }
 
     private val viewModel: CreationViewModel by activityViewModels()
-//    private lateinit var relatedNodesAdapter: RelatedNodesAdapter
+
+    //    private lateinit var relatedNodesAdapter: RelatedNodesAdapter
     private var curNode = ComicNode()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_test, container, false)
-
-
-        initializeRecyclerView(root)
-        initializeScrollWheel(root)
-
-
-        return root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initializeRecyclerView()
         addItemButton.setOnClickListener { addItemToList() }
-        scrollWheelToggleButton.setOnClickListener { toggleScrollWheel() }
-        smoothScrollTestBtn.setOnClickListener {
-            if (positionInput.text.isNullOrBlank())
-                showMessage("Enter an index")
-            else
-                recyclerView.smoothScrollToPosition(positionInput.text.toString().toInt())
-        }
-        scrollTestBtn.setOnClickListener {
-            if (positionInput.text.isNullOrBlank())
-                showMessage("Enter an index")
-            else
-                recyclerView.scrollToPosition(positionInput.text.toString().toInt())
-        }
     }
 
 //    private fun initView(root: View) {
@@ -124,7 +79,7 @@ class CreationFragmentII : Fragment() {
 //        startActivityForResult(intent, requestCode)
 //    }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
 //        when (requestCode) {
 //            CENTER_NODE_RC -> {
@@ -169,68 +124,26 @@ class CreationFragmentII : Fragment() {
 //            }
 //        }
 //    }
-    private fun initializeRecyclerView(root: View) {
-        val recyclerView = root.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.adapter = RecyclerViewAdapter().apply {
+    private fun initializeRecyclerView() {
+        rv.adapter = RecyclerViewAdapter().apply {
             submitList(getInitialList())
             onItemClickListener = { showMessage(event) }
         }
-        recyclerView.addItemDecoration(RecyclerItemDecoration())
-
-//        recyclerView.layoutManager = CircularLayoutManager(
-//            resources.getDimension(R.dimen.circular_list_radius),
-//            resources.getDimension(R.dimen.circular_list_center_x)
-//        ).apply {
-//            scalingFactor = 1f
-//            shouldIgnoreHeaderAndFooterMargins = true
-//            shouldCenterIfProgrammaticallyScrolled = true
-//            isAutoStabilizationEnabled = true
-//        }
-    }
-
-    private fun initializeScrollWheel(root: View) {
-        val scrollWheel = root.findViewById<ScrollWheel>(R.id.scrollWheel)
-        scrollWheel.isEnabled = false
-        scrollWheel.isHighlightTouchAreaEnabled = false
-//        scrollWheel.isHandleClicksEnabled = false
-        scrollWheel.onItemClickListener = { x, y ->
-            val index = recyclerView.getChildAdapterPosition(x, y)
-            if (index != INVALID_INDEX) showMessage("onClick " + getList()[index].event)
-        }
-        scrollWheel.onItemLongClickListener = { x, y ->
-            val index = recyclerView.getChildAdapterPosition(x, y)
-            if (index != INVALID_INDEX) showMessage("onLongClick " + getList()[index].event)
-        }
-        scrollWheel.onScrollListener = { recyclerView.scrollBy(0, it.toInt()) }
-        scrollWheel.onFlingListener = {
-            // Since onTouchReleasedListener would be called before onFlingListener, we'll first
-            // have to stop the ongoing stabilization before we could initiate the fling.
-            recyclerView.stopScroll()
-            recyclerView.fling(0, it.toInt())
-        }
-        scrollWheel.onTouchReleasedListener = {
-            // Calling stabilize externally as scrolling and flinging is controlled by the
-            // ScrollWheel. If RecyclerView.scrollBy method was not used, the external call to
-            // stabilize is not necessary.
-            recyclerView.circularLayoutManager!!.stabilize()
-        }
+        rv.addItemDecoration(RecyclerItemDecoration())
     }
 
     private fun addItemToList() {
-        (recyclerView.adapter as RecyclerViewAdapter).apply {
+        (rv.adapter as RecyclerViewAdapter).apply {
             submitList(currentList.toMutableList().apply {
                 add(Model(size + 1, "Event ${size + 1}", "12:00am - 12:00pm"))
-            }) { recyclerView.invalidateItemDecorations() }
+            }) { rv.invalidateItemDecorations() }
         }
     }
-    private fun toggleScrollWheel() {
-        scrollWheel.isEnabled = !scrollWheel.isEnabled
-        scrollWheel.isHighlightTouchAreaEnabled = !scrollWheel.isHighlightTouchAreaEnabled
+
+    private fun getInitialList() = (1..10).map {
+        Model(it, "Event $it", "12:00am - 12:00pm")
     }
 
-    private fun getInitialList() = (1..10).map { Model(it, "Event $it", "12:00am - 12:00pm") }
-
-    private fun getList() = (recyclerView.adapter as RecyclerViewAdapter).currentList
 
     private fun showMessage(msg: String) =
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()

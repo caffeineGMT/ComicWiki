@@ -11,7 +11,8 @@ import edu.utcs.comicwiki.R
 
 import kotlinx.android.synthetic.main.list_row.view.*
 
-class RecyclerViewAdapter : ListAdapter<Model, RecyclerViewAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class RecyclerViewAdapter(private val viewModel: CreationViewModel) :
+    ListAdapter<Model, RecyclerViewAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     var onItemClickListener: (Model.() -> Unit)? = null
 

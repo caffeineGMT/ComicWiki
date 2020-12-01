@@ -4,5 +4,5 @@
     android:id="@+id/addNode"
     android:layout_width="50dp"
     android:layout_height="50dp"
-    android:background="@color/lightBlue"
+    android:background="@color/comicDarkBlue"
     android:src="@drawable/ic_round_add_50" />
