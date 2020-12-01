@@ -7,8 +7,9 @@
     android:padding="@dimen/margin_s">
 
     <ImageView
-        android:id="@+id/img"
+        android:id="@+id/image"
         android:layout_width="@dimen/list_item_bullet_size"
+        android:scaleType="centerCrop"
         android:layout_height="@dimen/list_item_bullet_size"
         android:src="@drawable/list_item_bullet"
         android:textColor="@color/black"
@@ -18,7 +19,7 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/event"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_s"
@@ -26,7 +27,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_l"
         app:layout_constraintBottom_toTopOf="@+id/timings"
-        app:layout_constraintStart_toEndOf="@+id/img"
+        app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Event" />
 
@@ -39,8 +40,8 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_m"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img"
-        app:layout_constraintTop_toBottomOf="@+id/event"
+        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/name"
         tools:text="Timings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.kapil.circularlayoutmanager.CircularLayoutManager
@@ -141,7 +140,7 @@ class CreationFragment : Fragment() {
                         this.largeImageURL = largeImageURL
                         this.apiDetailURL = apiDetailURL
                     }
-                    viewModel.setRelatedNodes(tempNode)
+                    viewModel.addRelatedNode(tempNode)
                 }
             }
         }

@@ -1,13 +1,18 @@
 package edu.utcs.comicwiki.ui.creation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.kapil.circularlayoutmanager.CircularLayoutManager
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.model.ComicNode
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.apiDetailURLKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.nameKey
+import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.smallImageURLKey
 import kotlinx.android.synthetic.main.fragment_test.*
 
 
@@ -29,7 +34,9 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
         super.onViewCreated(view, savedInstanceState)
 
         initializeRecyclerView()
-        addItemButton.setOnClickListener { addItemToList() }
+        addItemButton.setOnClickListener {
+            addItemToList()
+        }
     }
 
 //    private fun initView(root: View) {
@@ -79,10 +86,10 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
 //        startActivityForResult(intent, requestCode)
 //    }
 
-    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        when (requestCode) {
-//            CENTER_NODE_RC -> {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CENTER_NODE_RC -> {
 //                centerNodeImage.setBackgroundColor(Color.WHITE)
 //                data?.extras?.apply {
 //                    val name = getString(nameKey)
@@ -102,48 +109,48 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
 //                        this.apiDetailURL = apiDetailURL
 //                    }
 //                }
-//            }
-//            ADD_NODE_RC -> {
-//                data?.extras?.apply {
-//                    val name = getString(nameKey)
-//                    val deck = getString(deckKey)
-//                    val smallImageURL = getString(smallImageURLKey)
-//                    val largeImageURL = getString(largeImageURLKey)
-//                    val apiDetailURL = getString(apiDetailURLKey)
-//
-//                    val tempNode = ComicNode()
-//                    tempNode.apply {
-//                        this.name = name
-//                        this.deck = deck
-//                        this.smallImageURL = smallImageURL
-//                        this.largeImageURL = largeImageURL
-//                        this.apiDetailURL = apiDetailURL
-//                    }
-//                    viewModel.setRelatedNodes(tempNode)
-//                }
-//            }
-//        }
-//    }
+            }
+            ADD_NODE_RC -> {
+                data?.extras?.apply {
+                    val name = getString(nameKey)
+                    val deck = getString(deckKey)
+                    val smallImageURL = getString(smallImageURLKey)
+                    val largeImageURL = getString(largeImageURLKey)
+                    val apiDetailURL = getString(apiDetailURLKey)
+
+                    val tempNode = ComicNode()
+                    tempNode.apply {
+                        this.name = name
+                        this.deck = deck
+                        this.smallImageURL = smallImageURL
+                        this.largeImageURL = largeImageURL
+                        this.apiDetailURL = apiDetailURL
+                    }
+                    viewModel.addRelatedNode(tempNode)
+                    rv.adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+    }
     private fun initializeRecyclerView() {
-        rv.adapter = RecyclerViewAdapter().apply {
-            submitList(getInitialList())
-            onItemClickListener = { showMessage(event) }
+        rv.adapter = RecyclerViewAdapter(viewModel).apply {
+//            submitList(getInitialList())
+            onItemClickListener = {
+                showMessage(event)
+            }
         }
         rv.addItemDecoration(RecyclerItemDecoration())
     }
 
     private fun addItemToList() {
-        (rv.adapter as RecyclerViewAdapter).apply {
-            submitList(currentList.toMutableList().apply {
-                add(Model(size + 1, "Event ${size + 1}", "12:00am - 12:00pm"))
-            }) { rv.invalidateItemDecorations() }
-        }
+//        (rv.adapter as RecyclerViewAdapter).apply {
+//            submitList(currentList.toMutableList().apply {
+//                add(Model(size + 1, "Event ${size + 1}", "12:00am - 12:00pm"))
+//            }) { rv.invalidateItemDecorations() }
+//        }
+        val intent = Intent(requireContext(), ComicNodeSearchActivity::class.java)
+        startActivityForResult(intent, ADD_NODE_RC)
     }
-
-    private fun getInitialList() = (1..10).map {
-        Model(it, "Event $it", "12:00am - 12:00pm")
-    }
-
 
     private fun showMessage(msg: String) =
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()

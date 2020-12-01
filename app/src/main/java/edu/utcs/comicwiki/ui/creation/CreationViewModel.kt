@@ -33,7 +33,7 @@ class CreationViewModel() : ViewModel() {
         return relatedNodes
     }
 
-    fun setRelatedNodes(comicNode: ComicNode) {
+    fun addRelatedNode(comicNode: ComicNode) {
         val local = relatedNodes.value?.toMutableList()
         local?.let {
             it.add(comicNode)
