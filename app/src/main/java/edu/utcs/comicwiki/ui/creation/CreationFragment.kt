@@ -46,7 +46,7 @@ class CreationFragment : Fragment() {
 
         initView(root)
 
-        viewModel.observeRelatedComicNodes().observe(viewLifecycleOwner, Observer {
+        viewModel.observeRelatedNodes().observe(viewLifecycleOwner, Observer {
             relatedNodesAdapter.notifyDataSetChanged()
         })
 

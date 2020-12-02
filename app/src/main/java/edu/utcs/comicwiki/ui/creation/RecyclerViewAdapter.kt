@@ -6,58 +6,51 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
-
-import kotlinx.android.synthetic.main.list_row.view.*
+import kotlinx.android.synthetic.main.row_related_node.view.*
 
 class RecyclerViewAdapter(private val viewModel: CreationViewModel) :
     RecyclerView.Adapter<RecyclerViewAdapter.VH>() {
 
-    var onItemClickListener: (Model.() -> Unit)? = null
-
-//    companion object {
-//        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Model>() {
-//            override fun areItemsTheSame(oldItem: Model, newItem: Model) = oldItem.id == newItem.id
-//            override fun areContentsTheSame(oldItem: Model, newItem: Model) = oldItem == newItem
-//        }
-//    }
-
     @SuppressLint("ClickableViewAccessibility")
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val name: TextView = itemView.name
-        private val deck: TextView = itemView.timings
+        private val deck: TextView = itemView.deck
         private val image: ImageView = itemView.image
 
         fun bind(item: ComicNode?) {
             name.text = item?.name
             deck.text = item?.deck
+            name.isVisible = false
+            deck.isVisible = false
             if (item != null) {
-                Glide.fetch(item.smallImageURL, item.smallImageURL, image)
+                Glide.fetch(item.largeImageURL, item.smallImageURL, image)
+                image.clipToOutline = true
             }
-//            itemView.setOnClickListener { onItemClickListener?.invoke(model) }
         }
 
-//        init {
-//            itemView.setOnLongClickListener {
-//                viewModel.deleteRelatedNodesAt(adapterPosition)
-//                true
-//            }
-//        }
-//
-//        fun bind(item: ComicNode?) {
-//            if (item != null) {
-//                Glide.fetch(item.smallImageURL!!, item.smallImageURL!!, nodeImage)
-//            }
-//        }
+        init {
+            itemView.setOnLongClickListener {
+                viewModel.deleteRelatedNodesAt(adapterPosition)
+                Toast.makeText(it.context, "Related node deleted.", Toast.LENGTH_SHORT).show()
+                true
+            }
+            itemView.setOnClickListener {
+                name.isVisible = !name.isVisible
+                deck.isVisible = !deck.isVisible
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewAdapter.VH {
         val itemView = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.list_row, parent, false)
+            .inflate(R.layout.row_related_node, parent, false)
         return VH(itemView)
     }
 
