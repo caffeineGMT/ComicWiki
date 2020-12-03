@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
+import edu.utcs.comicwiki.glide.Glide
 
 class HomeFragment : Fragment() {
     companion object {
@@ -22,7 +26,6 @@ class HomeFragment : Fragment() {
     private lateinit var charactersAdapter: CharactersAdapter
     private lateinit var objectsAdapter: ObjectsAdapter
     private lateinit var locationsAdapter: LocationsAdapter
-    private lateinit var powersAdapter: PowersAdapter
     private lateinit var conceptsAdapter: ConceptsAdapter
     private val homeViewModel: HomeViewModel by activityViewModels()
 
@@ -34,31 +37,43 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         initView(root)
-        initObservers()
+        initObservers(root)
+        initActions(root)
 
         return root
     }
 
-    private fun initObservers() {
-        homeViewModel.observeTeamList().observe(viewLifecycleOwner, Observer {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    private fun initObservers(root: View) {
+        homeViewModel.observeRandomItem().observe(viewLifecycleOwner, Observer {
+            val tv = root.findViewById<ImageView>(R.id.doYouKnowImage)
+            val deck = root.findViewById<TextView>(R.id.doYouKnowDeck)
+            Glide.fetch(it.image.mediumURL, it.image.mediumURL, tv)
+            deck.text = it.deck
+        })
+        homeViewModel.observeTeams().observe(viewLifecycleOwner, Observer {
             teamsAdapter.notifyDataSetChanged()
         })
-        homeViewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
+        homeViewModel.observeCharacters().observe(viewLifecycleOwner, Observer {
             charactersAdapter.notifyDataSetChanged()
         })
-        homeViewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
+        homeViewModel.observeObjects().observe(viewLifecycleOwner, Observer {
             objectsAdapter.notifyDataSetChanged()
         })
-        homeViewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
+        homeViewModel.observeLocations().observe(viewLifecycleOwner, Observer {
             locationsAdapter.notifyDataSetChanged()
         })
-        homeViewModel.observeCharacterList().observe(viewLifecycleOwner, Observer {
+        homeViewModel.observeConcepts().observe(viewLifecycleOwner, Observer {
             conceptsAdapter.notifyDataSetChanged()
         })
     }
 
     private fun initView(root: View) {
-        // characterList
+
         val characterList_rv = root.findViewById<RecyclerView>(R.id.rv_characters)
         charactersAdapter = CharactersAdapter(homeViewModel)
         characterList_rv.adapter = charactersAdapter
@@ -83,12 +98,19 @@ class HomeFragment : Fragment() {
         objectsAdapter = ObjectsAdapter(homeViewModel)
         objects_rv.adapter = objectsAdapter
         objects_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    }
 
-//        val power_rv = root.findViewById<RecyclerView>(R.id.rv_powers)
-//        powersAdapter = PowersAdapter(homeViewModel)
-//        power_rv.adapter = powersAdapter
-//        power_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    private fun initActions(root: View) {
+        val tv = root.findViewById<ImageView>(R.id.doYouKnowImage)
+        tv.setOnClickListener {
+            val item = homeViewModel.getRandomItem()
+            val name = item?.name ?:""
+            val siteURL = item?.siteDetailURL
+            val description = item?.description
+            val imageURL = item?.image?.originalURL
 
-
+            val action = HomeFragmentDirections.actionNavigationHomeToGenericItemFragment(imageURL,description,name)
+            it.findNavController().navigate(action)
+        }
     }
 }

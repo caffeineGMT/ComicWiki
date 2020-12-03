@@ -15,7 +15,9 @@ import edu.utcs.comicwiki.model.ComicNode
 class CreationViewModel() : ViewModel() {
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private val centerNode = MutableLiveData<ComicNode>()
+    private val centerNode = MutableLiveData<ComicNode>().apply {
+        value = ComicNode()
+    }
     private val relatedNodes = MutableLiveData<List<ComicNode>>().apply {
         value = mutableListOf()
     }
@@ -31,10 +33,16 @@ class CreationViewModel() : ViewModel() {
     }
 
     // region: centerComicNode
+    fun observeCenterNode(): LiveData<ComicNode> {
+        return centerNode
+    }
     fun deleteCenterNode() {
         centerNode.value = ComicNode()
     }
 
+    fun setCenterNode(comicNode: ComicNode) {
+        centerNode.value = comicNode
+    }
     // endregion
 
     // region: relatedComicNodes

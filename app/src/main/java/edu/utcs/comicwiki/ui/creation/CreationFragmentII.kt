@@ -3,11 +3,15 @@ package edu.utcs.comicwiki.ui.creation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.google.firebase.auth.FirebaseAuth
+import edu.utcs.comicwiki.MainActivity
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
@@ -29,7 +33,6 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
     }
 
     private val viewModel: CreationViewModel by activityViewModels()
-    private var curNode = ComicNode()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,6 +51,13 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
         viewModel.observeRelatedNodes().observe(viewLifecycleOwner, Observer {
             rv.adapter?.notifyDataSetChanged()
         })
+        viewModel.observeCenterNode().observe(viewLifecycleOwner, Observer {
+            centerNodeImage.background = null
+            Glide.fetch(it.largeImageURL, it.largeImageURL, centerNodeImage)
+            centerNodeImage.clipToOutline = true
+            centerNodeImage.imageAlpha = 100
+            centerNodeName.text = it.name
+        })
     }
 
     private fun initializeActions() {
@@ -64,8 +74,39 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
             viewModel.deleteCenterNode()
         }
         save.setOnClickListener {
-
+//            if (FirebaseAuth.getInstance().currentUser == null) {
+//                val text = "You have to log in first before saving any content."
+//                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+//            } else {
+//                curNode.userDescription = customizedContent.text.toString()
+////                curNode.relatedNodes = viewModel.getAllRelatedNodes()
+//                viewModel.saveComicNode(curNode)
+//                viewModel.getUserComicNodes()
+//                viewModel.getGlobalComicNodes()
+//                val text = "Successfully saved."
+//                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+//            }
         }
+        customizedContent.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                return
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+                return
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.isEmpty()) {
+                    (context as MainActivity).hideKeyboard()
+                }
+            }
+        })
     }
 
     private fun injectComicNode(context: Context, requestCode: Int) {
@@ -84,7 +125,8 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
                     val largeImageURL = getString(largeImageURLKey)
                     val apiDetailURL = getString(apiDetailURLKey)
 
-                    curNode.apply {
+                    val tempCenterNode = ComicNode()
+                    tempCenterNode.apply {
                         this.name = name
                         this.deck = deck
                         this.smallImageURL = smallImageURL
@@ -92,13 +134,8 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
                         this.apiDetailURL = apiDetailURL
                     }
 
-                    // handle UI
-                    centerNodeImage.background = null
-                    Glide.fetch(largeImageURL, largeImageURL, centerNodeImage)
-                    centerNodeImage.clipToOutline = true
-                    centerNodeImage.imageAlpha = 100
-                    centerNodeName.text = name
-                    centerNodeDeck.text = deck
+                    viewModel.setCenterNode(tempCenterNode)
+
                     Toast.makeText(context, "Center node created", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -110,56 +147,19 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
                     val largeImageURL = getString(largeImageURLKey)
                     val apiDetailURL = getString(apiDetailURLKey)
 
-                    val tempNode = ComicNode()
-                    tempNode.apply {
+                    val tempRelatedNode = ComicNode()
+                    tempRelatedNode.apply {
                         this.name = name
                         this.deck = deck
                         this.smallImageURL = smallImageURL
                         this.largeImageURL = largeImageURL
                         this.apiDetailURL = apiDetailURL
                     }
-                    viewModel.addRelatedNode(tempNode)
+                    viewModel.addRelatedNode(tempRelatedNode)
 
                     Toast.makeText(context, "Related node created", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-
-
-
-
-
-    //    private fun initView(root: View) {
-//        val clear = root.findViewById<Button>(R.id.clear)
-//        val save = root.findViewById<Button>(R.id.save)
-//        val customizedContent = root.findViewById<EditText>(R.id.customizedContent)
-//
-//        addNode.setOnClickListener {
-//            injectComicNode(requireContext(), ADD_NODE_RC)
-//        }
-//        centerNode.setOnClickListener {
-//            injectComicNode(requireContext(), CENTER_NODE_RC)
-//        }
-//        clear.setOnClickListener {
-//            centerNode.setImageBitmap(null)
-//            curNode = ComicNode()
-//
-//            viewModel.deleteAllRelatedNodes()
-//        }
-//        save.setOnClickListener {
-//            if (FirebaseAuth.getInstance().currentUser == null) {
-//                val text = "You have to log in first before saving any content."
-//                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-//            } else {
-//                curNode.userDescription = customizedContent.text.toString()
-////                curNode.relatedNodes = viewModel.getAllRelatedNodes()
-//                viewModel.saveComicNode(curNode)
-//                viewModel.getUserComicNodes()
-//                viewModel.getGlobalComicNodes()
-//                val text = "Successfully saved."
-//                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-//            }
-//        }
-//    }
 }

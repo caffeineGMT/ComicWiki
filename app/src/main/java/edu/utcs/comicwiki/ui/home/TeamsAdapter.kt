@@ -5,9 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.model.Team
@@ -23,7 +21,7 @@ class TeamsAdapter(private val viewModel: HomeViewModel) :
 
         init {
             itemView.setOnClickListener {
-                val item = viewModel.getTeamListAt(adapterPosition)
+                val item = viewModel.getTeamsAt(adapterPosition)
                 val name = item?.name ?:""
                 val siteURL = item?.siteDetailURL
                 val description = item?.description
@@ -48,7 +46,7 @@ class TeamsAdapter(private val viewModel: HomeViewModel) :
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-       holder.bind(viewModel.getTeamListAt(position))
+       holder.bind(viewModel.getTeamsAt(position))
     }
 
     override fun getItemCount(): Int {

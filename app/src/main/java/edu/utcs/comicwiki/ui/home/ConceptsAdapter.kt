@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
@@ -21,6 +22,16 @@ class ConceptsAdapter(private val viewModel: HomeViewModel) :
         private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {
+            itemView.setOnClickListener {
+                val item = viewModel.getConceptsAt(adapterPosition)
+                val name = item?.name ?:""
+                val siteURL = item?.siteDetailURL
+                val description = item?.description
+                val imageURL = item?.image?.originalURL
+
+                val action = HomeFragmentDirections.actionNavigationHomeToGenericItemFragment(imageURL,description,name)
+                it.findNavController().navigate(action)
+            }
         }
 
         fun bind(item: Concept?) {

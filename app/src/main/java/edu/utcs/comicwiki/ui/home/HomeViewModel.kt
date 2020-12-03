@@ -1,14 +1,12 @@
 package edu.utcs.comicwiki.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import edu.utcs.comicwiki.api.ComicVineAPI
 import edu.utcs.comicwiki.api.ComicVineRepo
 import edu.utcs.comicwiki.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class HomeViewModel : ViewModel() {
     companion object {
@@ -26,6 +24,7 @@ class HomeViewModel : ViewModel() {
     private val locations = MutableLiveData<List<Location>>()
     private val concepts = MutableLiveData<List<Concept>>()
     private val objects = MutableLiveData<List<Object>>()
+    private val randomItem = MediatorLiveData<Character>()
 
 
     private val team_apiPath = MutableLiveData<String>()
@@ -34,7 +33,6 @@ class HomeViewModel : ViewModel() {
     private val teamFriends = MutableLiveData<List<Character>>()
     private val teamEnemies = MutableLiveData<List<Character>>()
 
-
     init {
         netFetchCharacters()
         netFetchTeams()
@@ -42,7 +40,33 @@ class HomeViewModel : ViewModel() {
         netFetchLocations()
         netFetchConcepts()
         netFetchObjects()
+        netFetchRandomItem()
+
+        netFetchRandomItem()
+        randomItem.addSource(characters) {
+            val random = Random.nextInt(0, characters.value?.size ?: 0)
+            randomItem.value = characters.value?.get(random)
+        }
     }
+
+    // region: randomItem
+    fun netFetchRandomItem() {
+//        randomItem.addSource(characters) {
+//            val random = Random.nextInt(0, characters.value?.size ?: 0)
+//            randomItem.value = characters.value?.get(random)
+//        }
+    }
+
+    fun observeRandomItem(): LiveData<Character> {
+        return randomItem
+    }
+
+    fun getRandomItem(): Character? {
+        return randomItem.value
+    }
+
+    // endregion
+
 
     // region: characterList
     fun netFetchCharacters() = viewModelScope.launch(
@@ -52,11 +76,11 @@ class HomeViewModel : ViewModel() {
         characters.postValue(comicVineRepo.fetchCharacters())
     }
 
-    fun observeCharacterList(): LiveData<List<Character>> {
+    fun observeCharacters(): LiveData<List<Character>> {
         return characters
     }
 
-    fun getCharacterListAt(position: Int): Character? {
+    fun getCharactersAt(position: Int): Character? {
         val localList = characters.value?.toList()
         localList?.let {
             if (position >= it.size)
@@ -79,11 +103,11 @@ class HomeViewModel : ViewModel() {
         teams.postValue(comicVineRepo.fetchTeams())
     }
 
-    fun observeTeamList(): LiveData<List<Team>> {
+    fun observeTeams(): LiveData<List<Team>> {
         return teams
     }
 
-    fun getTeamListAt(position: Int): Team? {
+    fun getTeamsAt(position: Int): Team? {
         val localList = teams.value?.toList()
         localList?.let {
             if (position >= it.size)

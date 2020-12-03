@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
@@ -22,7 +21,7 @@ class CharactersAdapter(private val viewModel: HomeViewModel) :
 
         init {
             itemView.setOnClickListener {
-                val item = viewModel.getCharacterListAt(adapterPosition)
+                val item = viewModel.getCharactersAt(adapterPosition)
                 val name = item?.name ?:""
                 val siteURL = item?.siteDetailURL
                 val description = item?.description
@@ -47,7 +46,7 @@ class CharactersAdapter(private val viewModel: HomeViewModel) :
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-       holder.bind(viewModel.getCharacterListAt(position))
+       holder.bind(viewModel.getCharactersAt(position))
     }
 
     override fun getItemCount(): Int {

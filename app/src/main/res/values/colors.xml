@@ -2,7 +2,6 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="blue">#00BCD4</color>
     <color name="yellow">#FFC107</color>
 
     <color name="comicLightBlue">#1b729f</color>

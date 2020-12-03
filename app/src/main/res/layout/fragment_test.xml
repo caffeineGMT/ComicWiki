@@ -48,13 +48,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/centerNodeDeck"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/circularConstraintLayout" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="0dp"
@@ -103,7 +96,6 @@
             tools:ignore="HardcodedText" />
 
     </com.kapil.circularlayoutmanager.CircularConstraintLayout>
-
 
     <Button
         android:id="@+id/clearAll"

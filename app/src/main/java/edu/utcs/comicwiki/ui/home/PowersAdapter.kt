@@ -5,12 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
-import edu.utcs.comicwiki.model.Concept
-import edu.utcs.comicwiki.model.Location
-import edu.utcs.comicwiki.model.Object
 import edu.utcs.comicwiki.model.Power
 
 class PowersAdapter(private val viewModel: HomeViewModel) :
@@ -22,6 +20,16 @@ class PowersAdapter(private val viewModel: HomeViewModel) :
         private var deck = itemView.findViewById<TextView>(R.id.deck)
 
         init {
+            itemView.setOnClickListener {
+                val item = viewModel.getPowersAt(adapterPosition)
+                val name = item?.name ?:""
+                val siteURL = item?.siteDetailURL
+                val description = item?.description
+                val imageURL = item?.image?.originalURL
+
+                val action = HomeFragmentDirections.actionNavigationHomeToGenericItemFragment(imageURL,description,name)
+                it.findNavController().navigate(action)
+            }
         }
 
         fun bind(item: Power?) {

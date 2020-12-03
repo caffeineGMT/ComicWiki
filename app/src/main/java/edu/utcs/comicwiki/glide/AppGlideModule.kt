@@ -42,7 +42,7 @@ object Glide {
                     .asBitmap()
                     .load(urlFallback)
                     .apply(glideOptions)
-                    .error(R.color.blue)
+                    .error(R.color.yellow)
             )
             .into(imageView)
     }
