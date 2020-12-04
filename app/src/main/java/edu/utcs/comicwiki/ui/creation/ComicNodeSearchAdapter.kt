@@ -31,7 +31,8 @@ class ComicNodeSearchAdapter(
         init {
             itemView.setOnClickListener {
                 val returnIntent = Intent().apply {
-                    val result = comicNodeSearchViewModel.getSearchCharacterResultsAt(adapterPosition)
+                    val result =
+                        comicNodeSearchViewModel.getSearchCharacterResultsAt(adapterPosition)
                     this.putExtra(nameKey, result?.name)
                     this.putExtra(deckKey, result?.deck)
                     this.putExtra(smallImageURLKey, result?.image?.iconURL)
@@ -44,7 +45,7 @@ class ComicNodeSearchAdapter(
         }
 
         fun bind(item: Character?) {
-            deck.text = item?.deck
+            itemView.tooltipText = item?.deck
             Glide.fetch(item?.image!!.iconURL, item.image.smallURL, searchImage)
         }
     }

@@ -127,11 +127,11 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
 
                     val tempCenterNode = ComicNode()
                     tempCenterNode.apply {
-                        this.name = name
+                        this.name = name ?: ""
                         this.deck = deck
-                        this.smallImageURL = smallImageURL
-                        this.largeImageURL = largeImageURL
-                        this.apiDetailURL = apiDetailURL
+                        this.smallImageURL = smallImageURL ?: ""
+                        this.largeImageURL = largeImageURL ?: ""
+                        this.apiDetailURL = apiDetailURL ?: ""
                     }
 
                     viewModel.setCenterNode(tempCenterNode)
@@ -149,11 +149,11 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
 
                     val tempRelatedNode = ComicNode()
                     tempRelatedNode.apply {
-                        this.name = name
+                        this.name = name ?: ""
                         this.deck = deck
-                        this.smallImageURL = smallImageURL
-                        this.largeImageURL = largeImageURL
-                        this.apiDetailURL = apiDetailURL
+                        this.smallImageURL = smallImageURL ?: ""
+                        this.largeImageURL = largeImageURL ?: ""
+                        this.apiDetailURL = apiDetailURL ?: ""
                     }
                     viewModel.addRelatedNode(tempRelatedNode)
 

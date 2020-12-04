@@ -21,7 +21,9 @@ import com.google.firebase.auth.FirebaseAuth
 import edu.utcs.comicwiki.AuthInitActivity.Companion.RC_SIGNIN
 import edu.utcs.comicwiki.ui.collection.CollectionFragment
 import edu.utcs.comicwiki.ui.creation.CreationFragment
+import edu.utcs.comicwiki.ui.creation.CreationFragmentII
 import edu.utcs.comicwiki.ui.creation.CreationViewModel
+import edu.utcs.comicwiki.ui.home.GenericItemFragment
 import edu.utcs.comicwiki.ui.home.HomeFragment
 import edu.utcs.comicwiki.ui.posts.PostsFragment
 import edu.utcs.comicwiki.ui.search.SearchFragment
@@ -32,6 +34,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val viewModel: CreationViewModel by viewModels()
+
+    // a workaround to prevent fragment being killed
+    val a = HomeFragment.newInstance()
+    val b = SearchFragment.newInstance()
+    val c = CreationFragmentII.newInstance()
+    val d = CollectionFragment.newInstance()
+    val e = GenericItemFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,13 +70,11 @@ class MainActivity : AppCompatActivity() {
 
         // setup Authentication
         initAuthListener()
-
-        // a workaround to prevent fragment being killed
-        HomeFragment.newInstance()
-        SearchFragment.newInstance()
-        CreationFragment.newInstance()
-        PostsFragment.newInstance()
-        CollectionFragment.newInstance()
+        a
+        b
+        c
+        d
+        e
     }
 
     override fun onSupportNavigateUp(): Boolean {
