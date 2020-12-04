@@ -40,7 +40,7 @@ class GenericItemSearchAdapter(
         }
 
         fun bind(item: GenericItem?) {
-            deck.text = item?.deck
+            itemView.tooltipText = item?.deck
             Glide.fetch(item?.image!!.iconURL, item.image.smallURL, iconImage)
         }
     }

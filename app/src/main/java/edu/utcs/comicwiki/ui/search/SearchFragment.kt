@@ -3,18 +3,21 @@ package edu.utcs.comicwiki.ui.search
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.MainActivity
 import edu.utcs.comicwiki.R
+import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
     companion object {
@@ -25,9 +28,8 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by activityViewModels()
     private lateinit var characterAdapter: GenericItemSearchAdapter
-    private lateinit var locationAdapter: GenericItemSearchAdapter
+    private lateinit var teamAdapter: GenericItemSearchAdapter
     private lateinit var storyArcAdapter: GenericItemSearchAdapter
-    private val resourcesList = listOf("character", "location", "story_arc")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,14 +65,21 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // folding keyboard and clear views
                 if (s.isEmpty()) {
+                    title1.visibility = View.INVISIBLE
+                    title2.visibility = View.INVISIBLE
+                    title3.visibility = View.INVISIBLE
                     (context as MainActivity).hideKeyboard()
                     viewModel.netFetch_Search("", "")
                 }
-
-                // searching on fly
-                viewModel.netFetch_Search(s.toString(),"character")
-                viewModel.netFetch_Search(s.toString(),"location")
-                viewModel.netFetch_Search(s.toString(),"story_arc")
+                else {
+                    // searching on fly
+                    title1.visibility = View.VISIBLE
+                    title2.visibility = View.VISIBLE
+                    title3.visibility = View.VISIBLE
+                    viewModel.netFetch_Search(s.toString(), "character")
+                    viewModel.netFetch_Search(s.toString(), "team")
+                    viewModel.netFetch_Search(s.toString(), "story_arc")
+                }
             }
         })
     }
@@ -81,8 +90,8 @@ class SearchFragment : Fragment() {
             characterAdapter.notifyDataSetChanged()
         })
 
-        viewModel.observeSearchResults("location").observe(viewLifecycleOwner, Observer {
-            locationAdapter.notifyDataSetChanged()
+        viewModel.observeSearchResults("team").observe(viewLifecycleOwner, Observer {
+            teamAdapter.notifyDataSetChanged()
 
         })
 
@@ -94,23 +103,22 @@ class SearchFragment : Fragment() {
 
     private fun initView(root: View) {
         val rv_characters = root.findViewById<RecyclerView>(R.id.rv_characters)
-        characterAdapter = GenericItemSearchAdapter(viewModel, resourcesList[0])
+        characterAdapter = GenericItemSearchAdapter(viewModel, "character")
         rv_characters.adapter = characterAdapter
-        rv_characters.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_characters.layoutManager = GridLayoutManager(context, 7)
 
-        val rv_locations = root.findViewById<RecyclerView>(R.id.rv_locations)
-        locationAdapter = GenericItemSearchAdapter(viewModel, "location")
-        rv_locations.apply {
-            adapter = locationAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val rv_teams = root.findViewById<RecyclerView>(R.id.rv_locations)
+        teamAdapter = GenericItemSearchAdapter(viewModel, "team")
+        rv_teams.apply {
+            adapter = teamAdapter
+            layoutManager = GridLayoutManager(context, 7)
         }
 
         val rv_storyArcs = root.findViewById<RecyclerView>(R.id.rv_storyArcs)
         storyArcAdapter = GenericItemSearchAdapter(viewModel, "story_arc")
         rv_storyArcs.apply {
             adapter = storyArcAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(context, 7)
         }
     }
 }

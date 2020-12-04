@@ -21,7 +21,7 @@ object Glide {
         // Options like CenterCrop are possible, but I like this one best
         .fitCenter()
         // A placeholder image for when the network is slow
-        .placeholder(R.drawable.ic_cloud_download_black_24dp)
+        .placeholder(R.drawable.spiderman_icon)
         // Rounded corners are so lovely.
         .transform(RoundedCorners(20))
         // If we can't fetch, give the user an indication  maybe it should

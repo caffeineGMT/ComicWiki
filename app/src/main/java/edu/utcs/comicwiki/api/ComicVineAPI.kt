@@ -46,7 +46,7 @@ interface ComicVineAPI {
     @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&resources=character")
     suspend fun searchCharacters(@Query("query") keyWords: String): CharactersResponse
 
-    @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=5")
+    @GET("search/?api_key=b685154d28f6b3fc55b27a06dfaed34041028bd2&format=json&limit=50")
     suspend fun search(
         @Query("query") query: String,
         @Query("resources") resources: String

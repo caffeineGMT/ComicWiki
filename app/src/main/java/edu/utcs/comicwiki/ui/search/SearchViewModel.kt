@@ -5,7 +5,6 @@ import edu.utcs.comicwiki.api.ComicVineAPI
 import edu.utcs.comicwiki.api.ComicVineRepo
 import edu.utcs.comicwiki.model.Character
 import edu.utcs.comicwiki.model.GenericItem
-import edu.utcs.comicwiki.model.Location
 import edu.utcs.comicwiki.model.StoryArc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,20 +14,13 @@ class SearchViewModel : ViewModel() {
     private val comicVineRepo = ComicVineRepo(comicVineAPI)
 
     private val searchedCharacterResults = MutableLiveData<List<Character>>()
-    private val locations = MutableLiveData<List<GenericItem>>()
+    private val teams = MutableLiveData<List<GenericItem>>()
     private val storyArcs = MutableLiveData<List<GenericItem>>()
     private val characters = MutableLiveData<List<GenericItem>>()
 
-    private var liveStoryArc = MediatorLiveData<List<StoryArc>>().apply {
-//        value =
-    }
+
 
     init {
-        liveStoryArc.apply {
-            addSource(searchedCharacterResults) {
-
-            }
-        }
     }
 
     // region: search result
@@ -70,8 +62,13 @@ class SearchViewModel : ViewModel() {
         ) {
             when (resources) {
                 "character" -> characters.postValue(comicVineRepo.search(query, "character"))
-                "location" -> locations.postValue(comicVineRepo.search(query, "team"))
+                "team" -> teams.postValue(comicVineRepo.search(query, "team"))
                 "story_arc" -> storyArcs.postValue(comicVineRepo.search(query, "issue"))
+                "" -> {
+                    characters.postValue(listOf())
+                    teams.postValue(listOf())
+                    storyArcs.postValue(listOf())
+                }
             }
         }
     }
@@ -79,7 +76,7 @@ class SearchViewModel : ViewModel() {
     fun observeSearchResults(resources: String): LiveData<List<GenericItem>> {
         return when (resources) {
             "character" -> characters
-            "location" -> locations
+            "team" -> teams
             "story_arc" -> storyArcs
             else -> MutableLiveData<List<GenericItem>>()
         }
@@ -93,7 +90,7 @@ class SearchViewModel : ViewModel() {
                     return null
                 return it[position]
             }
-            "location" -> locations.value?.toList()?.let {
+            "team" -> teams.value?.toList()?.let {
                 if (position >= it.size)
                     return null
                 return it[position]
@@ -111,10 +108,16 @@ class SearchViewModel : ViewModel() {
     fun getSearchResultsCount(resources: String): Int {
         return when (resources) {
             "character" -> characters.value?.size ?: 0
-            "location" -> locations.value?.size ?: 0
+            "team" -> teams.value?.size ?: 0
             "story_arc" -> storyArcs.value?.size ?: 0
             else -> 0
         }
+    }
+
+    fun resetSearchResults() {
+        characters.value = mutableListOf()
+        teams.value = listOf()
+        storyArcs.value = listOf()
     }
     // endregion
 

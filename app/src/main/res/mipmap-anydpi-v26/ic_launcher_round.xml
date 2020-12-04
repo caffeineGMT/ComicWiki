@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <foreground android:drawable="@drawable/man_saver_spider_spiderman_super_superhero_icon_1320195497035393176_0"/>
+    <foreground android:drawable="@drawable/spiderman_icon"/>
 </adaptive-icon>
