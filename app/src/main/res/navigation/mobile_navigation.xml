@@ -29,19 +29,24 @@
         android:id="@+id/navigation_creation"
         android:name="edu.utcs.comicwiki.ui.creation.CreationFragmentII"
         android:label="Creation"
-        tools:layout="@layout/fragment_test" />
+        tools:layout="@layout/fragment_test">
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_posts"
         android:name="edu.utcs.comicwiki.ui.posts.PostsFragment"
         android:label="Posts"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_posts">
+        <action
+            android:id="@+id/action_navigation_posts_to_navigation_creation"
+            app:destination="@id/navigation_creation" />
+    </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_collection"-->
-<!--        android:name="edu.utcs.comicwiki.ui.collection.CollectionFragment"-->
-<!--        android:label="Collection"-->
-<!--        tools:layout="@layout/fragment_collection" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/navigation_collection"-->
+    <!--        android:name="edu.utcs.comicwiki.ui.collection.CollectionFragment"-->
+    <!--        android:label="Collection"-->
+    <!--        tools:layout="@layout/fragment_collection" />-->
     <fragment
         android:id="@+id/genericItemFragment"
         android:name="edu.utcs.comicwiki.ui.home.GenericItemFragment"

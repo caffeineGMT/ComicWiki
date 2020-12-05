@@ -15,6 +15,7 @@ import edu.utcs.comicwiki.MainActivity
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
+import edu.utcs.comicwiki.model.RelatedNode
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.apiDetailURLKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
@@ -74,18 +75,20 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
             viewModel.deleteCenterNode()
         }
         save.setOnClickListener {
-//            if (FirebaseAuth.getInstance().currentUser == null) {
-//                val text = "You have to log in first before saving any content."
-//                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-//            } else {
-//                curNode.userDescription = customizedContent.text.toString()
-////                curNode.relatedNodes = viewModel.getAllRelatedNodes()
-//                viewModel.saveComicNode(curNode)
-//                viewModel.getUserComicNodes()
-//                viewModel.getGlobalComicNodes()
-//                val text = "Successfully saved."
-//                Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-//            }
+            if (FirebaseAuth.getInstance().currentUser == null) {
+                val text = "You have to log in first before saving any content."
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (viewModel.observeCenterNode().value == null) {
+                val text = "You have to create center node first before saving any content."
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            viewModel.saveComicNode()
+            val text = "Successfully saved."
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
         }
         customizedContent.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

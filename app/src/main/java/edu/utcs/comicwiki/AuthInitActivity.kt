@@ -34,7 +34,7 @@ class AuthInitActivity : AppCompatActivity() {
         } else {
             val text =
                 "You have signed in, please sign out first if you want to sign in as another user."
-            Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -44,7 +44,7 @@ class AuthInitActivity : AppCompatActivity() {
         if (requestCode == RC_SIGNIN) {
             if (resultCode == Activity.RESULT_OK) {
                 val text = "You have signed in."
-                Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 finish()

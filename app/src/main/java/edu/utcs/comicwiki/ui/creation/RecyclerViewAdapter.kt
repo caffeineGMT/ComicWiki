@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
+import edu.utcs.comicwiki.model.RelatedNode
 import kotlinx.android.synthetic.main.row_related_node.view.*
 
 class RecyclerViewAdapter(private val viewModel: CreationViewModel) :

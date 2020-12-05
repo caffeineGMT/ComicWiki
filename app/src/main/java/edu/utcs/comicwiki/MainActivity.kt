@@ -1,7 +1,9 @@
 package edu.utcs.comicwiki
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,11 +38,11 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: CreationViewModel by viewModels()
 
     // a workaround to prevent fragment being killed
-    val a = HomeFragment.newInstance()
-    val b = SearchFragment.newInstance()
-    val c = CreationFragmentII.newInstance()
-    val d = CollectionFragment.newInstance()
-    val e = GenericItemFragment.newInstance()
+//    val a = HomeFragment.newInstance()
+//    val b = SearchFragment.newInstance()
+//    val c = CreationFragmentII.newInstance()
+//    val d = CollectionFragment.newInstance()
+//    val e = GenericItemFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,11 +72,11 @@ class MainActivity : AppCompatActivity() {
 
         // setup Authentication
         initAuthListener()
-        a
-        b
-        c
-        d
-        e
+//        a
+//        b
+//        c
+//        d
+//        e
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -85,18 +87,21 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGNIN) {
-            val header = findViewById<NavigationView>(R.id.side_nav_view).getHeaderView(0)
-            val userName = header.findViewById<TextView>(R.id.userName)
-            val userEmail = header.findViewById<TextView>(R.id.userEmail)
-            val profileImage = header.findViewById<ImageView>(R.id.profileImage)
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                val header = findViewById<NavigationView>(R.id.side_nav_view).getHeaderView(0)
+                val userName = header.findViewById<TextView>(R.id.userName)
+                val userEmail = header.findViewById<TextView>(R.id.userEmail)
+                val profileImage = header.findViewById<ImageView>(R.id.profileImage)
 
-            logIn.setImageResource(R.mipmap.ic_launcher_round)
-            profileImage.setImageResource(R.mipmap.ic_launcher_round)
+                logIn.setImageResource(R.mipmap.ic_launcher_round)
+                profileImage.setImageResource(R.mipmap.ic_launcher_round)
 
-            userEmail.text = FirebaseAuth.getInstance().currentUser?.email
-            userName.text = userEmail.text.toString().substringBefore("@")
+                userEmail.text = FirebaseAuth.getInstance().currentUser?.email
+                userName.text = userEmail.text.toString().substringBefore("@")
 
-            viewModel.getUserComicNodes()
+                viewModel.getUserComicNodes()
+            }
+
         }
     }
 

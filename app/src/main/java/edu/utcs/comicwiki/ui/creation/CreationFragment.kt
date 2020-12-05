@@ -17,6 +17,7 @@ import com.kapil.circularlayoutmanager.CircularLayoutManager
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
+import edu.utcs.comicwiki.model.RelatedNode
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.apiDetailURLKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
@@ -86,7 +87,6 @@ class CreationFragment : Fragment() {
             } else {
                 curNode.userDescription = customizedContent.text.toString()
 //                curNode.relatedNodes = viewModel.getAllRelatedNodes()
-                viewModel.saveComicNode(curNode)
                 viewModel.getUserComicNodes()
                 viewModel.getGlobalComicNodes()
                 val text = "Successfully saved."

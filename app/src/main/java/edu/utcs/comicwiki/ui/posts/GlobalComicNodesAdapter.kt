@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
@@ -21,6 +22,16 @@ class GlobalComicNodesAdapter(
         private var nodeImage = itemView.findViewById<ImageView>(R.id.nodeImage)
 
         init {
+            itemView.setOnClickListener {
+                val item = viewModel.getGlobalComicNodesAt(adapterPosition)
+                item?.let {
+                    viewModel.setCenterNode(it)
+                    viewModel.setRelatedNodes(it.relatedNodes)
+                }
+
+                val action = PostsFragmentDirections.actionNavigationPostsToNavigationCreation()
+                it.findNavController().navigate(action)
+            }
         }
 
         fun bind(item: ComicNode?) {

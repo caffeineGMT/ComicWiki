@@ -2,11 +2,10 @@ package edu.utcs.comicwiki.ui.posts
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
@@ -22,14 +21,25 @@ class UserComicNodesAdapter(
 
         init {
             itemView.setOnClickListener {
+                val item = viewModel.getUserComicNodesAt(adapterPosition)
+                item?.let {
+                    viewModel.setCenterNode(it)
+                    viewModel.setRelatedNodes(it.relatedNodes)
+                }
 
+                val action = PostsFragmentDirections.actionNavigationPostsToNavigationCreation()
+                it.findNavController().navigate(action)
+            }
+            itemView.setOnLongClickListener {
+                val item = viewModel.getUserComicNodesAt(adapterPosition)
+                viewModel.deleteComicNode(item)
+                true
             }
         }
 
         fun bind(item: ComicNode?) {
             if (item != null) {
                 Glide.fetch(item.smallImageURL!!, item.smallImageURL!!, nodeImage)
-                nodeImage.tooltipText = viewModel.getUserComicNodesAt(adapterPosition)?.name
             }
         }
     }
