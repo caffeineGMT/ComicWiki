@@ -2,12 +2,10 @@ package edu.utcs.comicwiki.ui.posts
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
@@ -27,6 +25,7 @@ class GlobalComicNodesAdapter(
                 item?.let {
                     viewModel.setCenterNode(it)
                     viewModel.setRelatedNodes(it.relatedNodes)
+                    viewModel.setUserDescription(it.userDescription)
                 }
 
                 val action = PostsFragmentDirections.actionNavigationPostsToNavigationCreation()

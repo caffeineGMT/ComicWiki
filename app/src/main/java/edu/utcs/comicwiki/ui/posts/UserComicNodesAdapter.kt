@@ -25,6 +25,7 @@ class UserComicNodesAdapter(
                 item?.let {
                     viewModel.setCenterNode(it)
                     viewModel.setRelatedNodes(it.relatedNodes)
+                    viewModel.setUserDescription(it.userDescription)
                 }
 
                 val action = PostsFragmentDirections.actionNavigationPostsToNavigationCreation()

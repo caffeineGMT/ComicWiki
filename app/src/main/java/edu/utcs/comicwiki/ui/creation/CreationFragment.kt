@@ -86,7 +86,7 @@ class CreationFragment : Fragment() {
                 Toast.makeText(context, text, Toast.LENGTH_LONG).show()
             } else {
                 curNode.userDescription = customizedContent.text.toString()
-//                curNode.relatedNodes = viewModel.getAllRelatedNodes()
+
                 viewModel.getUserComicNodes()
                 viewModel.getGlobalComicNodes()
                 val text = "Successfully saved."

@@ -15,7 +15,6 @@ import edu.utcs.comicwiki.MainActivity
 import edu.utcs.comicwiki.R
 import edu.utcs.comicwiki.glide.Glide
 import edu.utcs.comicwiki.model.ComicNode
-import edu.utcs.comicwiki.model.RelatedNode
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.apiDetailURLKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.deckKey
 import edu.utcs.comicwiki.ui.creation.ComicNodeSearchActivity.Companion.largeImageURLKey
@@ -59,6 +58,9 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
             centerNodeImage.imageAlpha = 100
             centerNodeName.text = it.name
         })
+        viewModel.observeUserDescription().observe(viewLifecycleOwner, Observer {
+            customizedContent.setText(it, TextView.BufferType.EDITABLE)
+        })
     }
 
     private fun initializeActions() {
@@ -73,6 +75,7 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
         clearAll.setOnClickListener {
             viewModel.deleteAllRelatedNodes()
             viewModel.deleteCenterNode()
+            viewModel.deleteUserDescription()
         }
         save.setOnClickListener {
             if (FirebaseAuth.getInstance().currentUser == null) {
@@ -86,6 +89,7 @@ class CreationFragmentII : Fragment(R.layout.fragment_test) {
                 return@setOnClickListener
             }
 
+            viewModel.setUserDescription(customizedContent.text.toString())
             viewModel.saveComicNode()
             val text = "Successfully saved."
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()

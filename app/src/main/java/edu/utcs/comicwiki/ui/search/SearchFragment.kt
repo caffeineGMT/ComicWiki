@@ -50,7 +50,11 @@ class SearchFragment : Fragment() {
         val search = root.findViewById<EditText>(R.id.action_search)
         search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                return
+                if (s == null)
+                    return
+                if (s.isEmpty()) {
+                    viewModel.clearAllSearchedResults()
+                }
             }
 
             override fun beforeTextChanged(
@@ -59,7 +63,11 @@ class SearchFragment : Fragment() {
                 count: Int,
                 after: Int
             ) {
-                return
+                if (s == null)
+                    return
+                if (s.isEmpty()) {
+                    viewModel.clearAllSearchedResults()
+                }
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -69,7 +77,7 @@ class SearchFragment : Fragment() {
                     title2.visibility = View.INVISIBLE
                     title3.visibility = View.INVISIBLE
                     (context as MainActivity).hideKeyboard()
-                    viewModel.netFetch_Search("", "")
+                    viewModel.clearAllSearchedResults()
                 }
                 else {
                     // searching on fly

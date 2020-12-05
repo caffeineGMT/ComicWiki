@@ -15,6 +15,9 @@ class CreationViewModel() : ViewModel() {
     private val relatedNodes = MutableLiveData<List<ComicNode>>().apply {
         value = mutableListOf()
     }
+    private val userDescription = MutableLiveData<String>().apply {
+        value = ""
+    }
 
     private val globalComicNodes = MutableLiveData<List<ComicNode>>()
     private val userComicNode = MutableLiveData<List<ComicNode>>().apply {
@@ -25,6 +28,24 @@ class CreationViewModel() : ViewModel() {
         getGlobalComicNodes()
         getUserComicNodes()
     }
+
+    // region: userDescription
+    fun observeUserDescription(): LiveData<String> {
+        return userDescription
+    }
+
+    fun deleteUserDescription() {
+        userDescription.value = ""
+    }
+
+    fun setUserDescription(str: String?) {
+        userDescription.value = str
+    }
+
+    fun getUserDescription(): String {
+        return userDescription.value ?: ""
+    }
+    // endregion
 
     // region: centerComicNode
     fun observeCenterNode(): LiveData<ComicNode> {
@@ -169,6 +190,9 @@ class CreationViewModel() : ViewModel() {
 
         if (relatedNodes.value != null)
             centerNode.value!!.relatedNodes = relatedNodes.value
+
+        if (userDescription.value != null)
+            centerNode.value!!.userDescription = userDescription.value
 
         centerNode.value!!.selfID = db.collection("globalComicNodes").document().id
         centerNode.value!!.ownerUID = FirebaseAuth.getInstance().currentUser!!.uid

@@ -23,6 +23,14 @@ class SearchViewModel : ViewModel() {
     init {
     }
 
+    fun clearAllSearchedResults() {
+        searchedCharacterResults.value = listOf()
+        teams.value = listOf()
+        storyArcs.value = listOf()
+        characters.value = listOf()
+    }
+
+
     // region: search result
     fun netFetch_SearchCharacter(keyWord: String) {
         viewModelScope.launch(
